@@ -41,7 +41,7 @@ protected:
 	CMemory *memory; // Memory (or bus) accessed by the processor
 
 	int number_of_signals;
-	int *signals; // Pending signals
+    int *m_signals; // Pending signals
 	int cycles;	  // Remaining cycles before end of instruction
 	bool waiting; // Indicates if cycle() has just waited
 

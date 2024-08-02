@@ -20,14 +20,14 @@
 #include "c-apple2e-hardware.hpp"
 #include "core/models/c-apple2e-core.hpp"
 #include "hardware/video/c-main-video-output.hpp"
-#include "hardware/c-carry-clock.hpp"
+#include "hardware/c-cycle-and-wait-clock.hpp"
 #include <iostream>
 
 CApple2eHardware::CApple2eHardware(CMemory *lcRom, CMemory*intRom) {
 	// Apple core
 	core = new CApple2eCore(lcRom, intRom);
-	clock = new CCarryClock(core->processor);
-	((CCarryClock *)clock)->set_frequency(1000000.0); // Set frequency to 1MHz.
+	clock = new CCycleAndWaitClock(core->processor);
+	((CCycleAndWaitClock*)clock)->set_frequency(1000000.0); // Set frequency to 1MHz.
 
 	// Peripherals
 	keyboard   = new CKeyboard(get_core(), get_core()->iou->keyboard, get_core()->iou->game);

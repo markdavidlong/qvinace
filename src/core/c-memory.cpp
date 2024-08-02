@@ -2,17 +2,17 @@
 /*
  * Vinace
  * Copyright (C) P.Y. Rollo 2009 <dev@pyrollo.com>
- * 
+ *
  * Vinace is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Vinace is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,21 +24,21 @@
 //
 
 CMemoryProxy::CMemoryProxy(CMemoryProxy *proxy, WORD start) {
-	this->start = proxy->get_start()+start;
-	this->memory = proxy->get_memory();
+    this->start = proxy->get_start()+start;
+    this->memory = proxy->get_memory();
 }
 
 CMemoryProxy::CMemoryProxy(CMemory *memory, WORD start) {
-	this->start = start;
-	this->memory = memory;
+    this->start = start;
+    this->memory = memory;
 }
 
 int CMemoryProxy::get_start() {
-	return start;
+    return start;
 }
 
 CMemory *CMemoryProxy::get_memory() {
-	return memory;
+    return memory;
 }
 
 //
@@ -46,8 +46,11 @@ CMemory *CMemoryProxy::get_memory() {
 //
 
 CRamMemory::CRamMemory(int size) {
-	this->size = size;
-	this->buffer = new BYTE[size];
-	for (int addr = 0; addr<size; addr++) 
-		buffer[addr] = (addr & 0x02)?0x00:0xFF;
+    this->size = size;
+    this->buffer = new BYTE[size];
+    for (int addr = 0; addr<size; addr++)
+    {
+        //   buffer[addr] = (addr & 0x02)?0x00:0xFF;
+        buffer[addr] = 00;
+    }
 }

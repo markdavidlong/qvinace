@@ -32,7 +32,7 @@ void CSpeakerUnit::write(BYTE addr, BYTE byte) {
 }
 
 BYTE CSpeakerUnit::read(BYTE addr) {
-	s_speaker = not s_speaker;
+	s_speaker = !s_speaker;
 	notifyUpdate();
 	return dummy_byte();
 }

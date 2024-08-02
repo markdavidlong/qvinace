@@ -21,24 +21,28 @@
 #define _C_GRAPHIC_MODE_RENDERER_HPP_
 
 #include "c-video-renderer.hpp"
+#include "c-gr-renderer.hpp"
 #include "core/units/c-graphic-mode-unit.hpp"
 
 class CGraphicModeRenderer: public CVideoRenderer
 {
 public:
-	CGraphicModeRenderer(CMemory* memory, CGraphicModeUnit* graphicModeUnit, CVideoOutput *vo, bool color);
-	~CGraphicModeRenderer();
-	void render(int startline, int endline);
+    CGraphicModeRenderer(CMemory* memory, CGraphicModeUnit* graphicModeUnit, CVideoOutput *vo, bool color);
+    ~CGraphicModeRenderer();
+    void render(int startline, int endline);
+    virtual QImage &renderToBitmap(QImage &bitmap, int startline, int endline);
+
 protected:
-	CGraphicModeUnit* graphicModeUnit;
+    CGraphicModeUnit* graphicModeUnit;
 
-	// Memory pages used for display
-	CMemory *memgr[2];
-	CMemory *memhgr[2];
+    // Memory pages used for display
+    CMemory *memgr[2];
+    CMemory *memhgr[2];
 
-	// Renderers for display modes
-	CVideoRenderer *gr[2];
-	CVideoRenderer *hgr[2];
+    // Renderers for display modes
+    CVideoRenderer  *gr[2];
+    CVideoRenderer *hgr[2];
+
 };
 
 

@@ -53,7 +53,7 @@ void CTextModeUnit::write(BYTE addr, BYTE byte) {
 
 BYTE CTextModeUnit::read(BYTE addr) {
 	switch (addr) {
-		case 0x1E: return bool_to_b7(not s_altchar);
+		case 0x1E: return bool_to_b7(!s_altchar);
 		case 0x1F: return bool_to_b7(s_80vid);
 	}
 	return dummy_byte();

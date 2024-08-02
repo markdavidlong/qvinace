@@ -20,7 +20,7 @@
 #ifndef _C_SPEAKER_HPP_
 #define _C_SPEAKER_HPP_
 
-#include "c-clock.hpp"
+#include "clock.hpp"
 #include "../core/units/c-speaker-unit.hpp"
 
 // 0,5 s buffering at 8000kHz
@@ -33,16 +33,16 @@
 class CSpeaker
 {
 public:
-	CSpeaker(CClock *clock, CSpeakerUnit *speakerUnit);
+	CSpeaker(Clock *clock, CSpeakerUnit *speakerUnit);
 	~CSpeaker();
 	static void timer_callback(void *ptr);
 	void record();
-	int get_pos();
+	int get_pos() const;
 	int get_max_pos();
-	unsigned char* get_buffer();
+	unsigned char* get_buffer() ;
 
 protected:
-	CClock *clock;
+	Clock *clock;
 	CSpeakerUnit *speakerUnit;
 
 	unsigned char buffer[SPEAKER_BUFFER_SIZE];

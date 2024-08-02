@@ -22,30 +22,31 @@
 #include "core/types.h"
 
 enum char_mode {
-	mode_normal,
-	mode_inverse,
-	mode_flash
+    mode_normal,
+    mode_inverse,
+    mode_flash
 };
 
 class CCharset
 {
 public:
-	virtual BYTE* get_char(BYTE code) = 0;
-	virtual char_mode get_mode(BYTE code) = 0;
+    virtual ~CCharset() { }
+    virtual BYTE* get_char(BYTE code) = 0;
+    virtual char_mode get_mode(BYTE code) = 0;
 };
 
 class C2ePrimaryCharset: public CCharset
 {
 public:
-	BYTE* get_char(BYTE code);
-	char_mode get_mode(BYTE code);
+    BYTE* get_char(BYTE code);
+    char_mode get_mode(BYTE code);
 };
 
 class C2eAlternativeCharset: public CCharset
 {
 public:
-	BYTE* get_char(BYTE code);
-	char_mode get_mode(BYTE code);
+    BYTE* get_char(BYTE code);
+    char_mode get_mode(BYTE code);
 };
 
 #endif // _C_CHARSET_HPP_

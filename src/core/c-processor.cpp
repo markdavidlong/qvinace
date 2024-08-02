@@ -24,10 +24,10 @@ CProcessor::CProcessor(CMemory *memory, int number_of_signals) {
 	this->number_of_signals = number_of_signals;
 	
 	// Initializing signals
-	signals = new int[number_of_signals];
+    m_signals = new int[number_of_signals];
 	
 	for (int signal=0; signal < number_of_signals; signal++)
-		signals[signal] = 0;
+        m_signals[signal] = 0;
 	
 	// Other members
 	cycles = 0;
@@ -38,12 +38,12 @@ CProcessor::CProcessor(CMemory *memory, int number_of_signals) {
 }
 
 CProcessor::~CProcessor() {
-	delete signals;
+    delete[] m_signals;
 }
 
 void CProcessor::signal(int signal) {
 	if (signal < number_of_signals)
-	signals[signal]++;
+    m_signals[signal]++;
 }
 
 void CProcessor::cycle() {
@@ -51,7 +51,7 @@ void CProcessor::cycle() {
 	if (waiting = cycles)
 		cycles--; // Wait for the last instruction to finish
 	else {
-		if (process_signals()); // First, process pending signals
+        if (process_signals()) // First, process pending signals
 			process_instruction(); // If no signal, process instruction
 		if (cycles) cycles--; // Begin cycle countdown
 	}

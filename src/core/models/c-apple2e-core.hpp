@@ -39,7 +39,7 @@ public:
 	
 	void reset();
 
-	CSlotsUnit        *slots;
+    CSlotsUnit        *m_slots;
 	CKeyboardUnit     *keyboard;
 	CGameUnit         *game;
 	CSpeakerUnit      *speaker;
@@ -54,7 +54,7 @@ class CApple2eCore: public CComputerCore
 {
 public:
 	CApple2eCore(CMemory *lcRom, CMemory *intRom);
-	~CApple2eCore();
+    virtual ~CApple2eCore();
 	
 	void reset();
 	

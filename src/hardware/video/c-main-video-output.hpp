@@ -26,18 +26,25 @@
 #include "core/units/c-text-mode-unit.hpp"
 #include "core/units/c-graphic-mode-unit.hpp"
 
+#include <QPixmap>
+
 class CMainVideoOutput: public CVideoOutput
 {
 public:
-	CMainVideoOutput(CMemory *main, CMemory *aux, CTextModeUnit* textModeUnit, CGraphicModeUnit* graphicModeUnit, bool color);
-	~CMainVideoOutput();
-	void render();
+    CMainVideoOutput(CMemory *main, CMemory *aux, CTextModeUnit* textModeUnit, CGraphicModeUnit* graphicModeUnit, bool color);
+    ~CMainVideoOutput();
+    void render();
+    virtual QPixmap &renderToPixmap();
+    virtual QImage &renderToBitmap();
 
 protected:
-	CGraphicModeUnit* graphicModeUnit;
+    QPixmap m_rendermap;
+    QImage m_renderbitmap;
 
-	CGraphicModeRenderer *graphicModeRenderer;
-	CTextModeRenderer    *textModeRenderer;
+    CGraphicModeUnit* graphicModeUnit;
+
+    CGraphicModeRenderer *graphicModeRenderer;
+    CTextModeRenderer    *textModeRenderer;
 };
 
 #endif // _C_MAIN_VIDEO_OUTPUT_HPP_

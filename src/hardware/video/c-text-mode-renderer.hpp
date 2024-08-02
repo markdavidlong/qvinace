@@ -25,37 +25,44 @@
 #include "c-charset.hpp"
 #include "core/units/c-text-mode-unit.hpp"
 #include "core/units/c-graphic-mode-unit.hpp"
+#include "font.h"
 
 
 // TODO : Do like in graphic mode renderer with two items arrays for page1/page2
 class CTextModeRenderer: public CVideoRenderer {
 public:
-	CTextModeRenderer(CMemory* main, CMemory* aux,
-	                  CTextModeUnit* textModeUnit,
-	                  CGraphicModeUnit* graphicModeUnit,
-	                  CVideoOutput* vo);
-	~CTextModeRenderer();
-	void render(int startline, int endline);
+    CTextModeRenderer(CMemory* main, CMemory* aux,
+                      CTextModeUnit* textModeUnit,
+                      CGraphicModeUnit* graphicModeUnit,
+                      CVideoOutput* vo);
+    ~CTextModeRenderer();
+    void render(int startline, int endline);
+    virtual QImage &renderToBitmap(QImage &bitmap, int startline, int endline);
+
 protected:
-	// Managers
-	CTextModeUnit    *textModeUnit;
-	CGraphicModeUnit *graphicModeUnit;
+    // Managers
+    CTextModeUnit    *textModeUnit;
+    CGraphicModeUnit *graphicModeUnit;
 
-	// Memory pages used for display
-	CMemory *memtxt1;
-	CMemory *memtxt2;
-	CMemory *auxtxt1;
-	CMemory *auxtxt2;
+    // Memory pages used for display
+    CMemory *memtxt1;
+    CMemory *memtxt2;
+    CMemory *auxtxt1;
+    CMemory *auxtxt2;
 
-	// Text modes
-	CTextRenderer *text40Page1;
-	CTextRenderer *text40Page2;
-	CTextRenderer *text80Page1;
-	CTextRenderer *text80Page2;
+    // Text modes
+    CTxt40ColRenderer *text40Page1;
+    CTxt40ColRenderer *text40Page2;
+    CTxt80ColRenderer *text80Page1;
+    CTxt80ColRenderer *text80Page2;
 
-	// Charsets
-	CCharset *primaryCharset;
-	CCharset *alternativeCharset;
+    // Charsets
+    CCharset *primaryCharset;
+    CCharset *alternativeCharset;
+
+    Font *primaryFont;
+    Font *alternativeFont;
+
 };
 
 #endif // _C_TEXT_MODE_RENDERER_HPP_

@@ -74,8 +74,8 @@ void CLanguageCardUnit::access(BYTE addr) {
 				s_lcwchg  = false;
 				break;
 			case 3:
-				s_lcram   = s_lcwchg or s_lcram;
-				s_lcwrite = s_lcwchg or s_lcwrite;
+				s_lcram   = s_lcwchg | s_lcram;
+				s_lcwrite = s_lcwchg | s_lcwrite;
 				s_lcwchg  = true; // Will be ok for the next time
 				break;
 		}

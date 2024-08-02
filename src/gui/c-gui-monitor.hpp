@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
+﻿/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
 /*
  * Vinace
  * Copyright (C) P.Y. Rollo 2009 <dev@pyrollo.com>
@@ -20,24 +20,46 @@
 
 #ifndef _C_GUI_MONITOR_HPP_
 #define _C_GUI_MONITOR_HPP_
-#include <gtkmm.h>
+
+//#include <QWidget>
+#include <QImage>
+#include <QQuickWidget>
+#include <QElapsedTimer>
+
+#include <QQuickImageProvider>
 #include "hardware/video/c-video-output.hpp"
 
-class CGuiMonitor:public Gtk::DrawingArea
+class CGuiMonitor:public QQuickWidget //, public QQuickImageProvider
 {
+    Q_OBJECT
+
 public:
-    CGuiMonitor(CVideoOutput *vo, const char *imagefile);
-	void render();
-	bool on_expose_event(GdkEventExpose* ev);
-	bool on_timer_event();
+    CGuiMonitor(CVideoOutput *vo, QWidget *parent = 0);
+    virtual ~CGuiMonitor();
+    QImage &renderToBitmap();
+    bool on_timer_event();
+
+    virtual QImage requestImage(const QString &id, QSize *size,
+                                const QSize &requestedSize);
+
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
+
+public slots:
+    void saveBuffer();
 
 protected:
-	Glib::RefPtr<Gdk::Pixbuf> background;
-	Glib::RefPtr<Gdk::Pixbuf> rendered;
-	CVideoOutput *vo;
-	virtual void get_color(char color, int &r, int &g, int &b) {};
+  //  void paintEvent(QPaintEvent *event);
+
+protected:
+    QImage background;
+    QImage rendered;
+
+    CVideoOutput *vo;
+
 private:
-	int xmargin, ymargin;
+    int xmargin, ymargin;
+    QElapsedTimer tmr;
 };
 
 

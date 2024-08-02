@@ -32,14 +32,14 @@ CSlotRomBus::CSlotRomBus() {
 }
 
 void CSlotRomBus::insert_card(int slot, CMemory *cardRom, CMemory *cardRomExt) {
-	if (slot > 0 and slot < 8) {
+	if (slot > 0 && slot < 8) {
 		rom[slot] = (cardRom)?cardRom:dummy;
 		romExt[slot] = (cardRomExt)?cardRomExt:dummy;
 	}
 }
 
 void CSlotRomBus::remove_card(int slot) {
-	if (slot > 0 and slot < 8)
+	if (slot > 0 && slot < 8)
 		rom[slot] = dummy;
 		romExt[slot] = dummy;
 }

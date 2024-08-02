@@ -52,7 +52,7 @@ public:
 	int get_track_maximum() { return DISK_TRACKS; };
 	int get_position_maximum() { return DISK_TRACK_NIBBLES; };
 
-	bool in_disk(int track, int position) { return track>=0 and track<get_track_maximum() and position>=0 and position<get_position_maximum(); };
+	bool in_disk(int track, int position) { return track>=0 && track<get_track_maximum() && position>=0 && position<get_position_maximum(); };
 
 	void set_name_from_file(std::string filename);
 	void load_from_dsk_file(std::string filename);

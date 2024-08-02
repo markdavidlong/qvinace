@@ -94,7 +94,7 @@ void CDiskUnit::access(BYTE addr) {
 			case 0x0F: mode = mode_write; break;
 		}
 
-		if (addr==0x0C and mode == mode_write) selected->ask_write();
+		if (addr==0x0C && mode == mode_write) selected->ask_write();
 
 	notifyUpdate();
 }
@@ -102,10 +102,10 @@ void CDiskUnit::access(BYTE addr) {
 BYTE CDiskUnit::read(BYTE addr) {
 	BYTE byte = dummy_byte()&0x7F;
 	
-	if (addr==0x0E and mode == mode_check) 
+	if (addr==0x0E && mode == mode_check) 
 		byte = bool_to_b7(selected->get_protection());
 	
-	if (addr==0x0C and mode == mode_read) {
+	if (addr==0x0C && mode == mode_read) {
 		selected->ask_read();
 		if (selected->data_ready())
 			byte = selected->get_data();
@@ -123,7 +123,7 @@ BYTE CDiskUnit::read(BYTE addr) {
 }
 
 void CDiskUnit::write(BYTE addr, BYTE byte){
-	if (addr==0x0D or addr==0x0F)
+	if (addr==0x0D || addr==0x0F)
 		selected->set_data(byte);
 	access(addr);
 }

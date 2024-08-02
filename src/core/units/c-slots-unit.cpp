@@ -21,21 +21,21 @@
 
 CSlotsUnit::CSlotsUnit() {
 	for (int index = 0; index <7; index++)
-		slots[index] = 0;
+        m_slots[index] = 0;
 }
 
 // Spread reset signal to cards
 void CSlotsUnit::reset() {
 	for (int index = 0; index <7; index++)
-		if (slots[index]) slots[index]->reset();
+        if (m_slots[index]) m_slots[index]->reset();
 	notifyUpdate();
 }
 
 // Dispatch write requests to cards
 void CSlotsUnit::write(BYTE addr, BYTE byte) {
 	if (addr > 0x8F) {
-		if (slots[(addr>>4)-0x9]) {
-			slots[(addr>>4)-0x9]->write(addr&0x0f, byte);
+        if (m_slots[(addr>>4)-0x9]) {
+            m_slots[(addr>>4)-0x9]->write(addr&0x0f, byte);
 		}
 	}
 }
@@ -43,27 +43,27 @@ void CSlotsUnit::write(BYTE addr, BYTE byte) {
 // Dispatch read requests to cards
 BYTE CSlotsUnit::read(BYTE addr) {
 	if (addr > 0x8F) {
-		if (slots[(addr>>4)-0x9]) {
-			return slots[(addr>>4)-0x9]->read(addr&0x0f);
+        if (m_slots[(addr>>4)-0x9]) {
+            return m_slots[(addr>>4)-0x9]->read(addr&0x0f);
 		} 
 	}
 	return dummy_byte()&0x7F;
 }
 
 void CSlotsUnit::insert_card(int slot, CUnit *cardUnit) {
-	if (slot > 0 and slot < 8)
-		slots[slot-1] = cardUnit;
+	if (slot > 0 && slot < 8)
+        m_slots[slot-1] = cardUnit;
 	notifyUpdate();
 }
 
 void CSlotsUnit::remove_card(int slot) {
-	if (slot > 0 and slot < 8)
-		slots[slot-1] = 0;
+	if (slot > 0 && slot < 8)
+        m_slots[slot-1] = 0;
 	notifyUpdate();
 }
 /*
 CCard *CSlotsUnit::get_card(int slot) {
-	if (slot >= 0 and slot < 8)
-		return slots[slot];
+	if (slot >= 0 && slot < 8)
+        return m_slots[slot];
 }
 */

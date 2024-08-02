@@ -19,7 +19,7 @@
 
 #include "c-speaker.hpp"
 
-CSpeaker::CSpeaker(CClock *clock, CSpeakerUnit *speakerUnit) {
+CSpeaker::CSpeaker(Clock *clock, CSpeakerUnit *speakerUnit) {
 	this->clock = clock;
 	this->speakerUnit = speakerUnit;
 	
@@ -43,7 +43,7 @@ void CSpeaker::record() {
 	if (pos == SPEAKER_BUFFER_SIZE) pos = 0;
 };
 
-int CSpeaker::get_pos() {
+int CSpeaker::get_pos() const {
 	return pos;
 }
 
@@ -51,7 +51,7 @@ int CSpeaker::get_max_pos() {
 	return SPEAKER_BUFFER_SIZE-1;
 }
 
-unsigned char* CSpeaker::get_buffer() {
+unsigned char* CSpeaker::get_buffer()  {
 	return buffer;
 }
 

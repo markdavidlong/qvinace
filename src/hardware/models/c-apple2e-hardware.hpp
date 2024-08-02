@@ -17,8 +17,8 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _C_APPLE2E_HARDWARE_HPP_
-#define _C_APPLE2E_HARDWARE_HPP_
+#pragma once
+
 #include "../../core/c-memory.hpp"
 #include "../../core/models/c-apple2e-core.hpp"
 #include "c-computer-hardware.hpp"
@@ -30,6 +30,8 @@
 
 class CApple2eHardware: public CComputerHardware
 {
+    Q_OBJECT
+
 public:
 	CApple2eHardware(CMemory *mainRom, CMemory *internalRom);
 	~CApple2eHardware();
@@ -51,4 +53,3 @@ protected:
 	CMemory *internalRom;
 };
 
-#endif // _C_APPLE2E_HARDWARE_HPP_

@@ -37,7 +37,7 @@ public:
 	void remove_card(int slot);
 
 private:
-	CUnit *slots[7];
+    CUnit *m_slots[7];
 };
 
 #endif // _C_SLOTS_UNIT_HPP_

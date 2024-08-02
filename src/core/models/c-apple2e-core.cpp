@@ -30,7 +30,7 @@
 
 CApple2eIoUnit::CApple2eIoUnit() {
 	// Apple ][+ units
-	slots        = new CSlotsUnit();
+    m_slots        = new CSlotsUnit();
 	keyboard     = new CKeyboardUnit();
 	game         = new CGameUnit();
 	speaker      = new CSpeakerUnit();
@@ -51,7 +51,7 @@ CApple2eIoUnit::CApple2eIoUnit() {
 	assign_read(      0x61, 0x67, game);
 	assign_read(      0x69, 0x70, game);
 	assign_read_write(0x80, 0x8F, languageCard);
-	assign_read_write(0x90, 0xFF, slots);
+    assign_read_write(0x90, 0xFF, m_slots);
 
 	// Apple //e extra IOU Map
 	assign_write(     0x06, 0x07, ioRom);
@@ -66,7 +66,7 @@ CApple2eIoUnit::CApple2eIoUnit() {
 }
 
 CApple2eIoUnit::~CApple2eIoUnit() {
-	delete slots;
+    delete m_slots;
 	delete keyboard;
 	delete game;
 	delete speaker;
@@ -77,7 +77,7 @@ CApple2eIoUnit::~CApple2eIoUnit() {
 }
 
 void CApple2eIoUnit::reset() {
-	slots->reset();
+    m_slots->reset();
 	keyboard->reset();
 	game->reset();
 	speaker->reset();
@@ -134,11 +134,11 @@ void CApple2eCore::reset() {
 }
 
 void CApple2eCore::insertCard(int slot, CUnit *cardUnit, CMemory *cardRom, CMemory *cardRomExt) {
-	iou->slots->insert_card(slot, cardUnit);
+    iou->m_slots->insert_card(slot, cardUnit);
 	slotBus->insert_card(slot, cardRom, cardRomExt);
 };
 
 void CApple2eCore::removeCard(int slot) {
-	iou->slots->remove_card(slot);
+    iou->m_slots->remove_card(slot);
 	slotBus->remove_card(slot);
 };

@@ -21,12 +21,12 @@
 #define _C_PADDLES_HPP_
 #include "../core/c-observable.hpp"
 #include "../core/units/c-game-unit.hpp"
-#include "../hardware/c-clock.hpp"
+#include "../hardware/clock.hpp"
 
 class CPaddles: public CObserver
 {
 public:
-	CPaddles(CClock *clock, CGameUnit *gameUnit);
+	CPaddles(Clock *clock, CGameUnit *gameUnit);
 	~CPaddles();
 	static void timer_callback(void *ptr);
 	void set_paddle(int paddle, BYTE position);

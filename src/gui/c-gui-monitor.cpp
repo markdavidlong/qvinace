@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
+﻿/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
 /*
  * Vinace
  * Copyright (C) P.Y. Rollo 2009 <dev@pyrollo.com>
@@ -18,107 +18,150 @@
  */
 
 
+#include <QPainter>
+
 #include "c-gui-monitor.hpp"
+#include <QImage>
+#include <QLatin1String>
+#include <QDebug>
+#include <QQuickItem>
+#include <QQmlProperty>
 
-CGuiMonitor::CGuiMonitor(CVideoOutput *vo, const char *imagefile) {
-	this->vo = vo;
-	this->background =  Gdk::Pixbuf::create_from_file(imagefile);
-	this->rendered = background->copy(); // Copy background
+CGuiMonitor::CGuiMonitor(CVideoOutput *vo,  QWidget *parent):
+    QQuickWidget(parent)//,QQuickImageProvider(QQmlImageProviderBase::Image)
+{
+    this->vo = vo;
+   //TODO: FIX ME! engine()->addImageProvider("crt",this);
+    setSource(QUrl::fromLocalFile(":GuiMonitor.qml"));
 
-	xmargin = (background->get_width() - VIDEO_OUTPUT_WIDTH)/2;
-	ymargin = background->get_height()/2 - VIDEO_OUTPUT_HEIGHT; // Pixels are twice as hight than they are wide
-	set_size_request(rendered->get_width(), rendered->get_height());
+    setResizeMode(ResizeMode::SizeRootObjectToView);
+    auto width = VIDEO_OUTPUT_WIDTH+16;
+    auto height =VIDEO_OUTPUT_HEIGHT*2;
+    //   this->background = QImage(width,height,QImage::Format::Format_ARGB32);
+    //   this->background.fill(Qt::black);
+    //   this->rendered = QImage(this->background); // Copy background
 
-	Glib::signal_timeout().connect(sigc::mem_fun(this, &CGuiMonitor::on_timer_event), /*40*/ 80 );
+    //  xmargin = (background.width() - VIDEO_OUTPUT_WIDTH)/2;
+    //  ymargin = background.height()/2 - VIDEO_OUTPUT_HEIGHT; // Pixels are twice as hight than they are wide
+    // resize(rendered.width(), rendered.height());
+    resize(width,height);
+
+    QSizePolicy sp(
+        QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    setSizePolicy(sp);
+    updateGeometry();
 }
 
-bool CGuiMonitor::on_expose_event(GdkEventExpose* ev) {
-	rendered->render_to_drawable(this->get_window(), this->get_style()->get_black_gc(), 0, 0, 0, 0, -1, -1, Gdk::RGB_DITHER_NONE, 0, 0);
-	return true;
+CGuiMonitor::~CGuiMonitor()
+{
+}
+
+QSize CGuiMonitor::sizeHint() const
+{
+    return QSize(576,384);
+}
+
+QSize CGuiMonitor::minimumSizeHint() const
+{
+    return QSize(576,384);
 }
 
 bool CGuiMonitor::on_timer_event() {
-	render();
-	return true;
+
+    //   rendered = QImage(renderToBitmap());
+
+    return true;
 }
 
-#define ADD_COL(c1, c2) (((c1)+(c2)<256)?((c1)+(c2)):255)
+QImage CGuiMonitor::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    Q_UNUSED(id);
+    Q_UNUSED(requestedSize);
 
-//#define ADD_COL(c1, c2) (c2)
+//    qDebug("Requesting image %s",qPrintable(id));
+#if 0
+    QImage testimg(576,384,QImage::Format_ARGB32_Premultiplied);
+    testimg.fill(Qt::black);
+    QPainter p(&testimg);
+    p.setPen(Qt::white);
 
-void CGuiMonitor::render() {
-	vo->render();
+    int x = qrand() % 576;
+    int y = qrand() % 384;
+    for (int idx = 0; idx < 576; idx+=8) {
+       p.drawLine(x,y,idx,383);
+         p.drawLine(x,y,idx,0);
+    }
+    for (int idx = 0; idx < 384; idx+=8)
+    {
+        p.drawLine(x,y,575,idx);
+           p.drawLine(x,y,0,idx);
+    }
+    if (size) *size = testimg.size();
+ //   qDebug() << (testimg.isNull()?"Null Image":"Non-Null Image");
+    return testimg;
+#else
+    QImage new_img(576,384,QImage::Format_RGBA64_Premultiplied);
+    if (status() ==  QQuickWidget::Status::Ready)
+    {
+        QImage old = renderToBitmap().scaled(560,384);
+        //Todo: Grab Keys and set QML status based on graphics mode.
 
-	int x, y, pixaddr, basey;
-	int r, g ,b;
+        new_img.fill(Qt::black);
+        QPainter p(&new_img);
+        p.drawImage(8,0,old);
+        if (size) *size = new_img.size();
 
-	int multx = rendered->get_n_channels();
-	int multy = rendered->get_rowstride();
+        QString screenMode = old.text("mode");  // text, mixed, or full
+        QString graphicsRes = old.text("gr");   // hires or lores
+        QString textWidth = old.text("text");   // 40 or 80
 
-	char   *vopixels = vo->get_pixels();
-	guint8 *pbpixels = rendered->get_pixels();
-	guint8 *bgpixels = background->get_pixels();
+        auto ro = rootObject();
+        if (ro)
+        {
+            if (screenMode == "text")
+            {
+                QQmlProperty(ro,"colorKiller").write(true);
+            }
+            else
+            {
+                QQmlProperty(ro,"colorKiller").write(false);
+            }
 
-	// Reset top and left borders to background
-	pixaddr = multx*xmargin + multy*(ymargin-1);
-	for (x = 0; x<VIDEO_OUTPUT_WIDTH; x++) {
-		pbpixels[pixaddr]   = bgpixels[pixaddr];
-		pbpixels[pixaddr+1] = bgpixels[pixaddr+1];
-		pbpixels[pixaddr+2] = bgpixels[pixaddr+2];
-		pixaddr+=multx;
-	}
-	pixaddr = multx*(xmargin-1) + multy*(ymargin);
-	for (y = 0; y<VIDEO_OUTPUT_HEIGHT; y++) {
-		pbpixels[pixaddr]   = bgpixels[pixaddr];
-		pbpixels[pixaddr+1] = bgpixels[pixaddr+1];
-		pbpixels[pixaddr+2] = bgpixels[pixaddr+2];
-		pixaddr+=multy;
-		pbpixels[pixaddr]   = bgpixels[pixaddr];
-		pbpixels[pixaddr+1] = bgpixels[pixaddr+1];
-		pbpixels[pixaddr+2] = bgpixels[pixaddr+2];
-		pixaddr+=multy;
-	}
+        } else qDebug() << "No root object!";
 
-	// Draw screen
-	for (y = 0; y<VIDEO_OUTPUT_HEIGHT; y++) {
-		basey = VIDEO_OUTPUT_WIDTH*y;
-		pixaddr = multx*xmargin + multy*(y*2+ymargin);
 
-		for (x = 0; x<VIDEO_OUTPUT_WIDTH; x++) {
-			get_color(vopixels[x+basey], r, g, b);
+    } else {qDebug("QML Not ready yet"); }
+    return new_img;
 
-			// Center pixel
-			pbpixels[pixaddr  ] = ADD_COL(bgpixels[pixaddr  ],r);
-			pbpixels[pixaddr+1] = ADD_COL(bgpixels[pixaddr+1],g);
-			pbpixels[pixaddr+2] = ADD_COL(bgpixels[pixaddr+2],b);
 
-			// Fade color
-			r=r>>2; g=g>>2; b=b>>2;
+#endif
+}
 
-			// Top pixel (mix with existing)
-			pbpixels[pixaddr-multy  ] = ADD_COL(pbpixels[pixaddr-multy  ],r);
-			pbpixels[pixaddr-multy+1] = ADD_COL(pbpixels[pixaddr-multy+1],g);
-			pbpixels[pixaddr-multy+2] = ADD_COL(pbpixels[pixaddr-multy+2],b);
+void CGuiMonitor::saveBuffer()
+{
+    rendered = renderToBitmap().scaled(560,24*16);
+    qDebug() << "Saving buffer.";
+    bool result = rendered.save("buffer.png");
+    qDebug() << (result?"Saved ok.":"Could not save.");
 
-			// Left pixel (mix with existing)
-			pbpixels[pixaddr-multx  ] = ADD_COL(pbpixels[pixaddr-multx  ],r);
-			pbpixels[pixaddr-multx+1] = ADD_COL(pbpixels[pixaddr-multx+1],g);
-			pbpixels[pixaddr-multx+2] = ADD_COL(pbpixels[pixaddr-multx+2],b);
+}
 
-			// Bottom pixel (mix with background)
-			pbpixels[pixaddr+multy  ] = ADD_COL(bgpixels[pixaddr+multy  ],r);
-			pbpixels[pixaddr+multy+1] = ADD_COL(bgpixels[pixaddr+multy+1],g);
-			pbpixels[pixaddr+multy+2] = ADD_COL(bgpixels[pixaddr+multy+2],b);
 
-			// Right pixel (mix with background)
-			pbpixels[pixaddr+multx  ] = ADD_COL(bgpixels[pixaddr+multx  ],r);
-			pbpixels[pixaddr+multx+1] = ADD_COL(bgpixels[pixaddr+multx+1],g);
-			pbpixels[pixaddr+multx+2] = ADD_COL(bgpixels[pixaddr+multx+2],b);
 
-			pixaddr += multx; // Next pixel please !
-		}
-	}
-	// All the screen is dirty (almost... could be improved by creating a rectangle for the display)
-	if (get_window())
-		get_window()->invalidate_region(get_window()->get_visible_region());
+//void CGuiMonitor::paintEvent(QPaintEvent * /*event*/)
+//{
+//    qDebug("Elapsed: %ld",tmr.restart());
+
+//    QPainter painter(this);
+//    painter.setBrush(Qt::black);
+//    painter.setPen(Qt::black);
+//    painter.drawRect(this->rect());
+
+//    painter.drawImage(xmargin,ymargin,renderToBitmap().scaled(560,24*16));
+//}
+
+
+QImage & CGuiMonitor::renderToBitmap()
+{
+    return vo->renderToBitmap();
 }

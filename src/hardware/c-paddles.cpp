@@ -28,7 +28,7 @@
 
 #include <iostream>
 
-CPaddles::CPaddles(CClock *clock, CGameUnit *gameUnit) {
+CPaddles::CPaddles(Clock *clock, CGameUnit *gameUnit) {
 	this->gameUnit = gameUnit;
 	gameUnit->subscribe(this);
 	clock->set_timer(PADDLE_CYCLES, &timer_callback, (void *)this); 
@@ -49,7 +49,7 @@ void CPaddles::notify(CObservable *obs) {
 }
 
 void CPaddles::set_paddle(int paddle, BYTE position) {
-	if (paddle >=0 and paddle <4)
+	if (paddle >=0 && paddle <4)
 		paddle_position[paddle] = position >> PADDLE_RESOLUTION;
 }
 

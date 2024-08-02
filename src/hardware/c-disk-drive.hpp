@@ -25,7 +25,7 @@
 #include "core/c-observer.hpp"
 #include "core/units/c-disk-unit.hpp"
 #include "c-floppy-disk.hpp"
-#include "c-clock.hpp"
+#include "clock.hpp"
 /*
 #define DISK_IMAGE_SECTORS 16
 #define DISK_IMAGE_TRACK_SIZE (DISK_IMAGE_SECTORS*256)
@@ -37,7 +37,7 @@
 class CDiskDrive: public CObservable, public CObserver
 {
 public:
-	CDiskDrive(CClock *clock, CDriveInterface *interface);
+	CDiskDrive(Clock *clock, CDriveInterface *interface);
 	~CDiskDrive();
 
 	static void timer_callback(void *ptr);
@@ -50,7 +50,7 @@ public:
 	void insert(CFloppyDisk *disk);
 	void eject();
 	bool loaded();
-	bool get_motor();
+	bool get_motor() const;
 
 	CFloppyDisk *get_disk();
 
@@ -60,7 +60,7 @@ protected:
 	BYTE read_nibble();
 	void write_nibble(BYTE data);
 
-	CClock *clock;
+	Clock *clock;
 
 	// Interface which the drive is connected to
 	CDriveInterface *interface;

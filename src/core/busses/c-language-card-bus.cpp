@@ -48,8 +48,8 @@ BYTE CLanguageCardBus::read(WORD addr) {
 }
 
 void CLanguageCardBus::write(WORD addr, BYTE byte) {
-	if (addr <0x1000 and loMemWrite) {loMemWrite->write(addr, byte); return; }
-	if (addr <0x3000 and hiMemWrite) {hiMemWrite->write(addr-0x1000, byte); return; }
+	if (addr <0x1000 && loMemWrite) {loMemWrite->write(addr, byte); return; }
+	if (addr <0x3000 && hiMemWrite) {hiMemWrite->write(addr-0x1000, byte); return; }
 }
 
 // Language card settings have changed, so change memory mapping

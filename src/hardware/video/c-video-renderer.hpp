@@ -24,6 +24,7 @@
 #define _C_VIDEO_RENDERER_HPP_
 #include "c-video-output.hpp"
 #include "core/c-memory.hpp"
+#include <QBitmap>
 
 // Weird base address calculation for Apple graphics
 #define GBASCALC(line) (((line&0x07)<<7)|((line&0x18)<<2)|(line&0x18))
@@ -31,14 +32,25 @@
 class CVideoRenderer
 {
 public:
-	CVideoRenderer(CMemory* memory, CVideoOutput* vo);
-	virtual void render(int startline, int endline) = 0;
-	void render_full();
-	void render_top();
-	void render_bottom();
+    CVideoRenderer(CMemory* memory, CVideoOutput* vo);
+    virtual ~CVideoRenderer() { }
+    virtual void render(int startline, int endline) = 0;
+    virtual QImage &renderToBitmap(QImage &bitmap, int startline, int endline) = 0;
+
+    void render_full();
+    void render_top();
+    void render_bottom();
+
+    QImage &renderFullToBitmap(QImage &bitmap);
+    QImage &renderTopToBitmap(QImage &bitmap);
+    QImage &renderBottomToBitmap(QImage &bitmap);
+
 protected:
-	CVideoOutput *vo;
-	CMemory      *mem;
+
+    CVideoOutput *vo;
+    CMemory      *mem;
+
+
 };
 
 #endif // _C_VIDEO_RENDERER_HPP_

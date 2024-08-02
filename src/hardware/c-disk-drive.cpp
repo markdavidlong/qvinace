@@ -48,7 +48,7 @@ static int	stepper_movement_table[16][NO_OF_PHASES] = {
 	{  0,  0,  0,  0,  0,  0,  0,  0 } };	/* all electromagnets on */
 // End copy from YAE
 
-CDiskDrive::CDiskDrive(CClock *clock, CDriveInterface *interface) {
+CDiskDrive::CDiskDrive(Clock *clock, CDriveInterface *interface) {
 	this->clock = clock;
 	this->interface = interface;
 	if (interface) {
@@ -126,7 +126,7 @@ CFloppyDisk *CDiskDrive::get_disk() {
 	return this->disk;
 };
 
-bool CDiskDrive::get_motor() {
+bool CDiskDrive::get_motor() const {
 	return motor;
 }
 

@@ -40,14 +40,14 @@ CProcessor6502::CProcessor6502(CMemory *mem):CProcessor(mem, NUMBER_OF_SIGNALS) 
 
 bool CProcessor6502::process_signals() {
 	// Reset
-	if (signals[SIGNAL_RESET]) {
-		signals[SIGNAL_RESET] = 0;
+    if (m_signals[SIGNAL_RESET]) {
+        m_signals[SIGNAL_RESET] = 0;
 		reset();
 		return false;
 	}
 	// Non masquable interrupts
-	if (signals[SIGNAL_NMI]) {
-		signals[SIGNAL_NMI] = 0;
+    if (m_signals[SIGNAL_NMI]) {
+        m_signals[SIGNAL_NMI] = 0;
 		cycles += 7;
 		push_word(PC);
 		push(P);
@@ -55,7 +55,7 @@ bool CProcessor6502::process_signals() {
 		return false;
 	}
 	// Interrupt request
-	if (signals[SIGNAL_IRQ]) {
+    if (m_signals[SIGNAL_IRQ]) {
 		if (!GET(I_BIT)) { // I is set, that means an IRQ is already being processed
 			cycles += 7;
 			push_word(PC);
@@ -63,19 +63,19 @@ bool CProcessor6502::process_signals() {
 			push(P);
 			SET(I_BIT);
 			PC = read_word(VECTOR_IRQ);
-			signals[SIGNAL_IRQ]--;
+            m_signals[SIGNAL_IRQ]--;
 			return false;
 		}
 	}
 	// Break
-	if (signals[SIGNAL_BRK]) {
+    if (m_signals[SIGNAL_BRK]) {
 		cycles += 7;
 		push_word(PC);
 		SET(B_BIT);
 		push(P);
 		SET(I_BIT);
 		PC = read_word(VECTOR_BRK);
-		signals[SIGNAL_BRK] = 0;
+        m_signals[SIGNAL_BRK] = 0;
 		return false;
 	}
 	return true; // OK all signals have been processed
@@ -313,7 +313,7 @@ void CProcessor6502::process_instruction() {
 			operand = read_byte(eaabs());
 			SET_IF(V_BIT, operand & 0x40 ); 
 			SET_IF(N_BIT, operand & 0x80 ); 
-			SET_IF(Z_BIT, not (A & operand));
+			SET_IF(Z_BIT, !(A & operand));
 			break;
 
 		case 0x24:	/* BIT zp */
@@ -321,7 +321,7 @@ void CProcessor6502::process_instruction() {
 			operand = read_byte(eazp());
 			SET_IF(V_BIT, operand & 0x40 ); 
 			SET_IF(N_BIT, operand & 0x80 ); 
-			SET_IF(Z_BIT, not (A & operand));
+			SET_IF(Z_BIT, !(A & operand));
 			break;
 
 		case 0x30:	/* BMI rr */

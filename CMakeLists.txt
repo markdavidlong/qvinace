@@ -1,25 +1,22 @@
-cmake_minimum_required( VERSION 3.10)
-set(CMAKE_BUILD_TYPE Release)
-project(vinace VERSION 0.1)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+cmake_minimum_required(VERSION 3.5)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+project(qvinace VERSION 0.1)
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTKMM REQUIRED gtkmm-2.4)
-find_package(Threads REQUIRED)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_path(PULSEAUDIO_INCLUDE_DIR
-        NAMES pulse/pulseaudio.h
-        DOC "The PulseAudio include directory"
-        )
-find_library(PULSEAUDIO_LIBRARY
-        NAMES pulse
-        DOC "The PulseAudio library"
-        )
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include_directories(${PULSEAUDIO_INCLUDE_DIRS})
+enable_testing()
+
+find_package(Qt6 COMPONENTS Core Widgets Quick QuickWidgets REQUIRED)
+
+
+if(MSVC)
+    add_compile_options(/MP)
+endif()
 
 add_subdirectory(src)
+
+
 
