@@ -74,7 +74,7 @@ void CGrRenderer::render_segment(int basex, int basey, char half) {
 
 void CGrRenderer::render(int startline, int endline) {
     int line, column, basex, basey/*, x, y*/;
-    BYTE byte, half;
+    uint8_t byte, half;
 
     basey = startline * 8;
     for (line=startline; line<=endline; line++) {
@@ -137,7 +137,7 @@ void CGrRenderer::renderByteToBitmap(QPolygon &poly, int basex, int basey, quint
 QImage &CGrRenderer::renderToBitmap(QImage &bitmap, int startline, int endline)
 {
     int line, column, basex, basey;
-    BYTE byte;
+    uint8_t byte;
     quint8 half;
     QPainter p(&bitmap);
     p.setBrush(Qt::black);

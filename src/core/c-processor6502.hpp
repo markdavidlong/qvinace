@@ -48,29 +48,29 @@ public:
 	void cycle(); // Play one machine cycle (may do nothing)
 
 	// Direct access to registers
-	WORD get_PC() { return PC; };
-	BYTE get_A()  { return A;  };
-	BYTE get_X()  { return X;  };
-	BYTE get_Y()  { return Y;  };
-	BYTE get_P()  { return P;  };
-	BYTE get_S()  { return S;  };
+    uint16_t get_PC() { return PC; };
+    uint8_t get_A()  { return A;  };
+    uint8_t get_X()  { return X;  };
+    uint8_t get_Y()  { return Y;  };
+    uint8_t get_P()  { return P;  };
+    uint8_t get_S()  { return S;  };
 
 	// Access to last executed instruction address
-	WORD get_last_PC() { return last_PC; };
+    uint16_t get_last_PC() { return last_PC; };
 
 
 protected:
 
 	// Registers
-	WORD PC;
-	BYTE A;
-	BYTE X;
-	BYTE Y;
-	BYTE P;
-	BYTE S;
+    uint16_t PC;
+    uint8_t A;
+    uint8_t X;
+    uint8_t Y;
+    uint8_t P;
+    uint8_t S;
 	
 	// Last processed instruction address
-	WORD last_PC;
+    uint16_t last_PC;
 	
 	// Mandatory CProcessor virtual methods
 	virtual void reset(); // Reset the processor
@@ -79,54 +79,54 @@ protected:
 	
 
 	// Memory methods
-    void write_byte(WORD addr, BYTE byte);
-    BYTE read_byte(WORD addr);
-	WORD read_word(WORD addr);
-	BYTE next_byte();
-	WORD next_word();
+    void write_byte(uint16_t addr, uint8_t byte);
+    uint8_t read_byte(uint16_t addr);
+    uint16_t read_word(uint16_t addr);
+    uint8_t next_byte();
+    uint16_t next_word();
 	
 	// Stack
-	void push(BYTE byte);
-    BYTE pull();
-    void push_word(WORD word);
-    WORD pull_word();
+    void push(uint8_t byte);
+    uint8_t pull();
+    void push_word(uint16_t word);
+    uint16_t pull_word();
 	
 	// Status register
 	void set_p(short bit, bool state);
     int get_p(short bit);
 
 	// Pseudo decimal mode
-    WORD bcdadjustadd(WORD result);
-    WORD bcdadjustsub(WORD result);	
+    uint16_t bcdadjustadd(uint16_t result);
+    uint16_t bcdadjustsub(uint16_t result);
 
 	// Addresses methods
-	void check_page_crossing(WORD addr, int offset);
+    void check_page_crossing(uint16_t addr, int offset);
 
-    WORD eazp(BYTE offset=0);
-    WORD eaabs(BYTE offset=0, bool extracycle = true);
-    WORD eazpxind();
-    WORD eazpindy(bool extracycle = true);
+    uint16_t eazp(uint8_t offset=0);
+    uint16_t eaabs(uint8_t offset=0, bool extracycle = true);
+    uint16_t eazpxind();
+    uint16_t eazpindy(bool extracycle = true);
 
     // Factorized code
-    void branch(BYTE operand);
-    void testresult(WORD result);
-    void testvalue(BYTE value);
-    void opadd(BYTE operand);
-    void opsub(BYTE operand);
-    void oprol(WORD addr, bool rotate);
-    void opror(WORD addr, bool rotate);
-    void opcmp(BYTE operand1, BYTE operand2);
-	void opdec(WORD addr);
-	void opinc(WORD addr);
+    void branch(uint8_t operand);
+    void testresult(uint16_t result);
+    void testvalue(uint8_t value);
+    void opadd(uint8_t operand);
+    void opsub(uint8_t operand);
+    void oprol(uint16_t addr, bool rotate);
+    void opror(uint16_t addr, bool rotate);
+    void opcmp(uint8_t operand1, uint8_t operand2);
+    void opdec(uint16_t addr);
+    void opinc(uint16_t addr);
 
 private:
 
 	// Some variables put here for optimisation purpose (avoid memory reservation once proc started)
-	BYTE opcode;
-	BYTE operand;
-	BYTE byte;
-	WORD word;
-	WORD addr;
+    uint8_t opcode;
+    uint8_t operand;
+    uint8_t byte;
+    uint16_t word;
+    uint16_t addr;
 
 };
 

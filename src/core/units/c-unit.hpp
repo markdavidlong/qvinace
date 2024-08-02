@@ -55,8 +55,8 @@ class CUnit: public CObservable
 public:
 	CUnit();
 	virtual void reset() {};
-	virtual BYTE read(BYTE addr) = 0;
-	virtual void write(BYTE addr, BYTE byte) = 0;
+    virtual uint8_t read(uint8_t addr) = 0;
+    virtual void write(uint8_t addr, uint8_t byte) = 0;
 };
 
 

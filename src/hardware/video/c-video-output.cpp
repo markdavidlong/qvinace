@@ -19,25 +19,21 @@
 
 #include "c-video-output.hpp"
 
-CVideoOutput::CVideoOutput() {
-    // Precompute a direct access to pixels per line/column
-    for (int line = 0; line < VIDEO_OUTPUT_HEIGHT; line++)
-        lines[line] = pixels + VIDEO_OUTPUT_WIDTH*line;
-}
+CVideoOutput::CVideoOutput() : pixels(QByteArray(255,0x00)) { }
 
-char *CVideoOutput::get_pixels() {
+const QByteArray &CVideoOutput::get_pixels() const {
     return pixels;
 }
 
 void CVideoOutput::set_pixel(int x, int y, apple_color color)
 {
-    lines[y][x] = color;
+    pixels[y*VIDEO_OUTPUT_WIDTH+x] = color;
 }
 
 void CVideoOutput::set_dpixel(int x, int y, apple_color color)
 {
-    lines[y][x] = color;
-    lines[y][x+1] = color;
+    pixels[y*VIDEO_OUTPUT_WIDTH+x] = color;
+    pixels[y*VIDEO_OUTPUT_WIDTH+x+1] = color;
 }
 
 

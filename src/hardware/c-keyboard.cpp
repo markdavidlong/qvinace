@@ -17,15 +17,19 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "hardware/models/c-apple2e-hardware.hpp"
+#include "core/units/c-keyboard-unit.hpp"
+#include "core/models/c-apple2e-core.hpp"
+
 #include "c-keyboard.hpp"
 
-CKeyboard::CKeyboard(CComputerCore *core, CKeyboardUnit *keyboard, CGameUnit *game) {
-	this->core = core;
-	this->keyboard = keyboard;
-	this->game = game;
+CKeyboard::CKeyboard(CApple2eHardware *hw) {
+    this->core = hw->get_core();
+    this->keyboard = core->iou->keyboard;
+    this->game = core->iou->game;
 }
 	
-void CKeyboard::press_key(BYTE asciiKey) {
+void CKeyboard::press_key(uint8_t asciiKey) {
 	keyboard->press_key(asciiKey);
 }
 

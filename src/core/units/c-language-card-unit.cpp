@@ -53,7 +53,7 @@ void CLanguageCardUnit::reset() {
 	notifyUpdate();
 }
 
-void CLanguageCardUnit::access(BYTE addr) {
+void CLanguageCardUnit::access(uint8_t addr) {
 	// Addresses from 0x80 to 0x8f
 	if ((addr&0xf0) == 0x80) {
 		s_lcbnk2  = addr&0x08; // Ram bank
@@ -83,11 +83,11 @@ void CLanguageCardUnit::access(BYTE addr) {
 	}
 }
 
-void CLanguageCardUnit::write(BYTE addr, BYTE byte) {
+void CLanguageCardUnit::write(uint8_t addr, uint8_t byte) {
 	access(addr);
 }
 
-BYTE CLanguageCardUnit::read(BYTE addr) {
+uint8_t CLanguageCardUnit::read(uint8_t addr) {
 	access(addr);
 	switch (addr) {
 		CASE_READ(lcbnk2, 0x11);

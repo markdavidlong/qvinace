@@ -43,10 +43,10 @@ CHgrRenderer::CHgrRenderer(CMemory* memory, CVideoOutput* vo, bool color):CVideo
 };
 
 void CHgrRenderer::render(int startline, int endline) {
-    int column, x, y, scanx, bascalc;
-    BYTE byte;
-    apple_color pixel;
-    char scanbits,shifted;
+    // int column, x, y, scanx, bascalc;
+    // BYTE byte;
+    // apple_color pixel;
+    // char scanbits,shifted;
 
     bool scanline[282]; // 280 pixels + 2 out of screen pixels for color computation
     scanline[0]   = false;
@@ -54,13 +54,13 @@ void CHgrRenderer::render(int startline, int endline) {
 
     bool shifteds[40]; // Shifted bit (B7 of each column)
 
-    for (y=startline*8; y<endline*8+8; y++)
+    for (int y=startline*8; y<endline*8+8; y++)
     {
         // First pass : decode bits
-        bascalc = GBASCALC(y>>3)|((y&0x7)<<10);
-        scanx = 1;
-        for (column=0; column<40; column++) {
-            byte = mem->read(bascalc++);
+        int bascalc = GBASCALC(y>>3)|((y&0x7)<<10);
+        int scanx = 1;
+        for (int column=0; column<40; column++) {
+            int byte = mem->read(bascalc++);
             shifteds[column] = byte & 0x80;
             scanline[scanx++] = byte & 0x01;
             scanline[scanx++] = byte & 0x02;
@@ -72,12 +72,12 @@ void CHgrRenderer::render(int startline, int endline) {
         }
 
         // Second pass : render pixels
-        x=0; scanx=2;
-        scanbits = (scanline[0]?1<<1:0)|(scanline[1]?1:0);
-        pixel = col_black; shifted = false; // Previous pixel state (out of screen = black, not shifted)
+        int x=0; scanx=2;
+        uint8_t scanbits = (scanline[0]?1<<1:0)|(scanline[1]?1:0);
+        apple_color pixel = col_black; uint8_t shifted = false; // Previous pixel state (out of screen = black, not shifted)
 
-        for (column=0; column<40; column++) {
-            shifted = shifteds[column]<<1;
+        for (int column=0; column<40; column++) {
+            shifted = (shifteds[column]?1:0) << 1;
             // If shifted segment, first half pixel repeats the previous pixel color
             if (shifted) vo->set_pixel(x++,y, pixel);  // Pixels are now shifted (x++)
 
@@ -155,10 +155,10 @@ QImage &CHgrRenderer::renderToBitmap(QImage &bitmap, int startline, int endline)
     p.setBrush(Qt::white);
     p.setPen(Qt::white);
 
-    int column, x, y, scanx, bascalc;
-    BYTE byte;
-    bool pixel;
-    bool shifted;
+    // int column, x, y, scanx, bascalc;
+    // BYTE byte;
+    // bool pixel;
+    // bool shifted;
 
     bool scanline[280];
     scanline[0]   = false;
@@ -167,14 +167,14 @@ QImage &CHgrRenderer::renderToBitmap(QImage &bitmap, int startline, int endline)
 
     bool shifteds[40]; // Shifted bit (B7 of each column)
 
-    for (y=startline*8; y<endline*8+8; y++)
+    for (int y=startline*8; y<endline*8+8; y++)
     {
         // First pass : decode bits
-        bascalc = GBASCALC(y>>3)|((y&0x7)<<10);
-        scanx = 0;
+        int bascalc = GBASCALC(y>>3)|((y&0x7)<<10);
+        int scanx = 0;
 
-        for (column=0; column<40; column++) {
-            byte = mem->read(bascalc++);
+        for (int column=0; column<40; column++) {
+            uint8_t byte = mem->read(bascalc++);
 
             shifteds[column] = byte & 0x80;
             scanline[scanx++] = byte & 0x01;
@@ -187,11 +187,11 @@ QImage &CHgrRenderer::renderToBitmap(QImage &bitmap, int startline, int endline)
         }
 
         // Second pass : render pixels
-        x=0; scanx=0;
+        int x=0; scanx=0;
 
-        pixel = false; shifted = false; // Previous pixel state (out of screen = black, not shifted)
+        bool pixel = false; bool shifted = false; // Previous pixel state (out of screen = black, not shifted)
 
-        for (column=0; column<40; column++) {
+        for (int column=0; column<40; column++) {
             shifted = shifteds[column];//<<1;
             // If shifted segment, first half pixel repeats the previous pixel color
             if (shifted) // Pixels are now shifted (x++)

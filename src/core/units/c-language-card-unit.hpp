@@ -32,8 +32,8 @@
 class CLanguageCardUnit: public CUnit {
 public:
 	void reset();
-	BYTE read(BYTE addr);
-	void write(BYTE addr, BYTE byte);
+    uint8_t read(uint8_t addr);
+    void write(uint8_t addr, uint8_t byte);
 
 	// Language Card ($D000-DFFF and $E000-FFFF spaces)
 	FLAG_RO(lcbnk2);   // Using $D000-$DFFF RAM bank 1 (0) or bank 2 (1)
@@ -42,7 +42,7 @@ public:
 	FLAG_RO(lcwchg);   // lcwrite changeable (1) or not (0) (to switch write, it is needed to switch twice)
 
 private:
-    void access(BYTE addr);
+    void access(uint8_t addr);
 };
 
 #endif // _C_LANGUAGE_CARD_UNIT_HPP_

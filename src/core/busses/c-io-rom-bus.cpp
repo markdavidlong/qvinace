@@ -31,7 +31,7 @@ CIoRomBus::~CIoRomBus() {
 	ioRomUnit->unsubscribe((CObserver *)this);
 }
 
-BYTE CIoRomBus::read(WORD addr) {
+uint8_t CIoRomBus::read(uint16_t addr) {
 	if ((addr&0xff00) == 0x0300)
 		return selectedC3Rom->read(addr);
     else

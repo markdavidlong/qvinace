@@ -48,7 +48,7 @@ void CPaddles::notify(CObservable *obs) {
 			paddle_counter[index] = paddle_position[index];
 }
 
-void CPaddles::set_paddle(int paddle, BYTE position) {
+void CPaddles::set_paddle(int paddle, uint8_t position) {
 	if (paddle >=0 && paddle <4)
 		paddle_position[paddle] = position >> PADDLE_RESOLUTION;
 }

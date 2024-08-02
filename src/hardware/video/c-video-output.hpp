@@ -29,10 +29,10 @@
 // - black and white GR mode
 // - 80 column text mode
 // 560 is 7(pixels)*40(columns)*2(half pixels)
-#define VIDEO_OUTPUT_WIDTH 560
+    const int  VIDEO_OUTPUT_WIDTH = 560;
 // Height is in plain pixels
 // 384 is 8(pixels)*24(lines)
-#define VIDEO_OUTPUT_HEIGHT 192
+    const int VIDEO_OUTPUT_HEIGHT  = 192;
 
 
 const unsigned char color_r[16] = {0x00, 0xdd, 0x00, 0xdd,
@@ -81,7 +81,7 @@ public:
      CVideoOutput();
     virtual ~CVideoOutput() { }
     virtual void render() = 0;
-    char *get_pixels();
+    const QByteArray &get_pixels() const;
     void set_pixel (int x, int y, apple_color color);;
     void set_dpixel(int x, int y, apple_color color);;
 
@@ -91,9 +91,9 @@ public:
     virtual QPixmap &renderToPixmap() = 0;
     virtual QImage &renderToBitmap() = 0;
 
-protected:
-    char pixels[VIDEO_OUTPUT_WIDTH*VIDEO_OUTPUT_HEIGHT] {}; // Actually only 4 lsb are significant
-    char *lines[VIDEO_OUTPUT_HEIGHT];
+private:
+    QByteArray pixels;
+
 };
 
 #endif // _C_VIDEO_OUTPUT_HPP_

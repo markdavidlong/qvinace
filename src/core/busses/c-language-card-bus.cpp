@@ -41,13 +41,13 @@ CLanguageCardBus::~CLanguageCardBus() {
 	delete hiRam;
 }
 
-BYTE CLanguageCardBus::read(WORD addr) {
+uint8_t CLanguageCardBus::read(uint16_t addr) {
 	if (addr <0x1000) return loMemRead->read(addr);
 	if (addr <0x3000) return hiMemRead->read(addr-0x1000);
 	return 0; // Should not occure
 }
 
-void CLanguageCardBus::write(WORD addr, BYTE byte) {
+void CLanguageCardBus::write(uint16_t addr, uint8_t byte) {
 	if (addr <0x1000 && loMemWrite) {loMemWrite->write(addr, byte); return; }
 	if (addr <0x3000 && hiMemWrite) {hiMemWrite->write(addr-0x1000, byte); return; }
 }

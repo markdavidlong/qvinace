@@ -26,7 +26,7 @@ CMainMemoryBus::CMainMemoryBus(CMemory *ram, CMemory *iou, CMemory *ioBus, CMemo
 	this->lcBus = lcBus;
 }
 
-BYTE CMainMemoryBus::read(WORD addr) {
+uint8_t CMainMemoryBus::read(uint16_t addr) {
 
 	// Language Card ($D000-$FFFF)
 	if (addr >= 0xD000) return lcBus->read(addr-0xD000);
@@ -41,7 +41,7 @@ BYTE CMainMemoryBus::read(WORD addr) {
 	return iou->read(addr-0xC000);
 }
 
-void CMainMemoryBus::write(WORD addr, BYTE byte) {
+void CMainMemoryBus::write(uint16_t addr, uint8_t byte) {
 
 	// Main ram ($0000-$BFFF)
 	if (addr < 0xC000) { ram->write(addr, byte); return; }

@@ -22,6 +22,8 @@
 
 #include "c-unit.hpp"
 
+#include <cstdint>
+
 //
 // Keyboard
 //
@@ -29,20 +31,20 @@
 class CKeyboardUnit: public CUnit {
 public:
 	void reset();
-	void write(BYTE addr, BYTE byte);
-	BYTE read(BYTE addr);
+    void write(uint8_t addr, uint8_t byte);
+    uint8_t read(uint8_t addr);
 	
-	void press_key(BYTE key);
+    void press_key(uint8_t key);
 	void release_key();
 	bool key_waiting();
 
 protected:
-	BYTE lastkey;
+    uint8_t lastkey;
 	bool keydown;
 	bool keywaiting;
 
 private:
-    void access(BYTE addr);
+    void access(uint8_t addr);
 };
 
 

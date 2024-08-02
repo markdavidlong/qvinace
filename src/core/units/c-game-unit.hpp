@@ -30,8 +30,8 @@ class CGameUnit: public CUnit {
 public:
 	CGameUnit();
 	void reset();
-	void write(BYTE addr, BYTE byte);
-	BYTE read(BYTE addr);
+    void write(uint8_t addr, uint8_t byte);
+    uint8_t read(uint8_t addr);
 
     FLAG_RW(pb0);
     FLAG_RW(pb1);
@@ -47,7 +47,7 @@ public:
     FLAG_RO(ptrig);
 
 private:
-    void access(BYTE addr);
+    void access(uint8_t addr);
 };
 
 #endif // _C_GAME_UNIT_HPP_

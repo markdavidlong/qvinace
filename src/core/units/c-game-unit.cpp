@@ -59,11 +59,11 @@ void CGameUnit::reset() {
 	notifyUpdate();
 }
 
-void CGameUnit::write(BYTE addr, BYTE byte) {
+void CGameUnit::write(uint8_t addr, uint8_t byte) {
 	access(addr);
 }
 
-BYTE CGameUnit::read(BYTE addr) {
+uint8_t CGameUnit::read(uint8_t addr) {
 	access(addr);
 	switch(addr & 0x0f) {
 		CASE_READ(pb0, 1);
@@ -77,7 +77,7 @@ BYTE CGameUnit::read(BYTE addr) {
 	return dummy_byte();
 };
 
-void CGameUnit::access(BYTE addr) {
+void CGameUnit::access(uint8_t addr) {
 	switch(addr) {
 		case 0x40: break; // STROBE - Not managed
 		case 0x70:

@@ -32,8 +32,8 @@
 class CGraphicModeUnit: public CUnit {
 public:
 	void reset();
-	void write(BYTE addr, BYTE byte);
-	BYTE read(BYTE addr);
+    void write(uint8_t addr, uint8_t byte);
+    uint8_t read(uint8_t addr);
 
 	FLAG_RO(text);
 	FLAG_RO(mixed);
@@ -41,7 +41,7 @@ public:
 	FLAG_RO(hires);
 
 private:
-    void access(BYTE addr);
+    void access(uint8_t addr);
 };
 
 #endif // _C_GRAPHIC_MODE_UNIT_HPP_

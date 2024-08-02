@@ -142,3 +142,9 @@ void CApple2eCore::removeCard(int slot) {
     iou->m_slots->remove_card(slot);
 	slotBus->remove_card(slot);
 };
+
+
+void CApple2eCore::cycle() {
+    processor->cycle();
+};
+

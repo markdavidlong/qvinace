@@ -48,15 +48,15 @@ public:
 
 	void ask_write();
 
-	void set_data(BYTE data) { ready=true; this->data=data; };
-	BYTE get_data() { ready=false; return data; };
+    void set_data(uint8_t data) { ready=true; this->data=data; };
+    uint8_t get_data() { ready=false; return data; };
 
 	bool onoff;
 	char number;
 protected:
 	drive_action action;
 
-	BYTE data;
+    uint8_t data;
 	bool ready;
 
 	bool protection;
@@ -66,18 +66,18 @@ class CDiskUnit:public CUnit
 {
 public:
 	CDiskUnit();
-	void write(BYTE addr, BYTE byte);
-	BYTE read(BYTE addr);
+    void write(uint8_t addr, uint8_t byte);
+    uint8_t read(uint8_t addr);
 	void reset();
 	CDriveInterface *interfaces[2];
 
 protected:
 	CDriveInterface *selected;
 	enum {mode_none, mode_read, mode_write, mode_check} mode;
-	BYTE buffered_data;
+    uint8_t buffered_data;
 private:
-	void access(BYTE addr);
-	BYTE dummy;
+    void access(uint8_t addr);
+    uint8_t dummy;
 };
 
 #endif // _C_DISK_UNIT_HPP_

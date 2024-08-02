@@ -90,14 +90,14 @@ void CProcessor6502::reset() {
 }
 
 
-void CProcessor6502::branch(BYTE operand) {
+void CProcessor6502::branch(uint8_t operand) {
 	word = (operand & 0x80)?operand-256:operand;
 	check_page_crossing(PC, word);
 	PC+=word;
 	cycles++;
 }
 
-void CProcessor6502::opadd(BYTE operand) {
+void CProcessor6502::opadd(uint8_t operand) {
 	word = operand + A + GET(C_BIT);
 	SET_IF(V_BIT, !((operand^A) & 0x80) && ((A^word) & 0x80));
 	if (GET(D_BIT)) {
@@ -109,7 +109,7 @@ void CProcessor6502::opadd(BYTE operand) {
 	SET_P_FOR(A);
 }
 
-void CProcessor6502::opsub(BYTE operand) {
+void CProcessor6502::opsub(uint8_t operand) {
 	word = 0xFF - operand + A + GET(C_BIT);
 	SET_IF(V_BIT, !((operand^A) & 0x80) && ((A^word) & 0x80));
 	if (GET(D_BIT)) {
@@ -122,7 +122,7 @@ void CProcessor6502::opsub(BYTE operand) {
 	SET_P_FOR(A);
 }
 
-void CProcessor6502::opcmp(BYTE operand1, BYTE operand2) {
+void CProcessor6502::opcmp(uint8_t operand1, uint8_t operand2) {
 	word =  0x100 - operand2 + operand1;
 	SET_IF(C_BIT, operand1>=operand2);
 	SET_P_FOR(word & 0xff);
@@ -130,7 +130,7 @@ void CProcessor6502::opcmp(BYTE operand1, BYTE operand2) {
 
 // Shift bits to the left and the most significant goes to C
 // if rotate is set then C is inserted at the right instead of 0
-void CProcessor6502::oprol(WORD addr, bool rotate) {
+void CProcessor6502::oprol(uint16_t addr, bool rotate) {
 	operand = read_byte(addr);
 	byte = (operand << 1 | (GET(C_BIT) & rotate));
 	SET_IF(C_BIT, operand & 0x80);
@@ -141,7 +141,7 @@ void CProcessor6502::oprol(WORD addr, bool rotate) {
 
 // Shift bits to the right and the less significant goes to C
 // if rotate is set then C is inserted at the left instead of 0
-void CProcessor6502::opror(WORD addr, bool rotate) {
+void CProcessor6502::opror(uint16_t addr, bool rotate) {
 	operand = read_byte(addr);
 	byte = (operand >> 1 | ((GET(C_BIT) & rotate) << 7));
 	SET_IF(C_BIT, operand & 0x01);
@@ -151,13 +151,13 @@ void CProcessor6502::opror(WORD addr, bool rotate) {
 }
 
 
-void CProcessor6502::opdec(WORD addr) {
+void CProcessor6502::opdec(uint16_t addr) {
     byte = read_byte(addr) - 1;
 	SET_P_FOR(byte);
 	write_byte(addr, byte);
 }
 
-void CProcessor6502::opinc(WORD addr) {
+void CProcessor6502::opinc(uint16_t addr) {
     byte = read_byte(addr) + 1;
 	SET_P_FOR(byte);
 	write_byte(addr, byte);
@@ -1018,54 +1018,54 @@ void CProcessor6502::process_instruction() {
 	}
 }
 
-void CProcessor6502::write_byte(WORD addr, BYTE byte) {
+void CProcessor6502::write_byte(uint16_t addr, uint8_t byte) {
 	memory->write(addr, byte);
 }
 
-BYTE CProcessor6502::read_byte(WORD addr) {
+uint8_t CProcessor6502::read_byte(uint16_t addr) {
 	return memory->read(addr);
 }
 
-WORD CProcessor6502::read_word(WORD addr) {
+uint16_t CProcessor6502::read_word(uint16_t addr) {
 	return memory->read(addr)|(memory->read(addr+1)<<8);
 }
 
-BYTE CProcessor6502::next_byte() {
+uint8_t CProcessor6502::next_byte() {
 	return read_byte(PC++);
 }
 
-WORD CProcessor6502::next_word() {
+uint16_t CProcessor6502::next_word() {
 	return next_byte()+(next_byte()<<8);
 }
 
-void CProcessor6502::push(BYTE byte) {
+void CProcessor6502::push(uint8_t byte) {
 	write_byte( (S--) + 0x0100, byte);
 }
 
-BYTE CProcessor6502::pull() {
+uint8_t CProcessor6502::pull() {
 	return read_byte( (++S) + 0x0100);
 }
 
-void CProcessor6502::push_word(WORD word) {
+void CProcessor6502::push_word(uint16_t word) {
 	push( word >> 8 );
 	push( word & 0xFF );
 }
 
-WORD CProcessor6502::pull_word() {
-	return pull() + ((WORD)pull()<<8);
+uint16_t CProcessor6502::pull_word() {
+    return pull() + ((uint16_t)pull()<<8);
 }
 
-void CProcessor6502::check_page_crossing(WORD addr, int offset) {
+void CProcessor6502::check_page_crossing(uint16_t addr, int offset) {
 	if ( ((addr+offset)^addr) & 0xff00) cycles++;
 }
 
 // Effective addressing calculation
 
-WORD CProcessor6502::eazp(BYTE offset) {
+uint16_t CProcessor6502::eazp(uint8_t offset) {
 	return (next_byte()+offset)&0xff;
 }
 
-WORD CProcessor6502::eaabs(BYTE offset, bool extracycle) {
+uint16_t CProcessor6502::eaabs(uint8_t offset, bool extracycle) {
 	addr = next_word()+offset;
 	// In most cases, changing page costs one extra cycle
 	if (extracycle) check_page_crossing(addr,offset);
@@ -1073,12 +1073,12 @@ WORD CProcessor6502::eaabs(BYTE offset, bool extracycle) {
 }
 
 /* ($00,X) */
-WORD CProcessor6502::eazpxind() {
+uint16_t CProcessor6502::eazpxind() {
 	return read_word(eazp(X));
 }
 
 /* ($00),Y */
-WORD CProcessor6502::eazpindy(bool extracycle) {
+uint16_t CProcessor6502::eazpindy(bool extracycle) {
 	addr = read_word(eazp());
 	if (extracycle) check_page_crossing(addr,Y);
 	return addr+Y;	

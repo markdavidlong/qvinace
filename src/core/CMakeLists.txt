@@ -9,7 +9,6 @@ set(CORE_SOURCE_FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/busses/c-language-card-bus.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/busses/c-main-memory-bus.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/busses/c-slot-rom-bus.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/models/c-computer-core.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/models/c-apple2e-core.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/units/c-unit.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/units/c-disk-unit.cpp

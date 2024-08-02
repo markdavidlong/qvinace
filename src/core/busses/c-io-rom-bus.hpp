@@ -28,7 +28,7 @@ class CIoRomBus: public CMemory, public CObserver {
 public:
 	CIoRomBus(CIoRomUnit *ioRomUnit, CMemory *slotRom, CMemory *internalRom);
 	~CIoRomBus();
-    BYTE read(WORD addr);
+    uint8_t read(uint16_t addr);
 	void notify(CObservable * obs);
 protected:
 	CIoRomUnit *ioRomUnit;

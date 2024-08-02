@@ -57,8 +57,8 @@ public:
 protected:
 	void set_motor(bool on);
 	void set_magnet(int magnet, bool on);
-	BYTE read_nibble();
-	void write_nibble(BYTE data);
+    uint8_t read_nibble();
+    void write_nibble(uint8_t data);
 
 	Clock *clock;
 

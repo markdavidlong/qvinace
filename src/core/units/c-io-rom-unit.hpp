@@ -32,14 +32,14 @@
 class CIoRomUnit: public CUnit {
 public:
 	void reset();
-	void write(BYTE addr, BYTE byte);
-	BYTE read(BYTE addr);
+    void write(uint8_t addr, uint8_t byte);
+    uint8_t read(uint8_t addr);
 
 	FLAG_RO(cxrom); // true=slots, false=internal
 	FLAG_RO(c3rom); // true=slot3, false=internal
 
 private:
-    void access(BYTE addr);
+    void access(uint8_t addr);
 };
 
 #endif // _C_IO_ROM_UNIT_HPP_

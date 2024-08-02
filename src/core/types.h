@@ -21,13 +21,12 @@
 #ifndef	_TYPES_H_
 #define	_TYPES_H_
 
-typedef	unsigned char	BYTE;
-typedef	unsigned short	WORD;
+#include <cstdint>
 
-inline BYTE dummy_byte() { return 0xFF; }
+inline uint8_t dummy_byte() { return 0xFF; }
 
 // Put state in b7
-inline BYTE bool_to_b7(BYTE byte, bool state) {	return (state)?byte|0x80:byte&0x7F; }
-inline BYTE bool_to_b7(bool state) { return bool_to_b7(dummy_byte(), state); }
+inline uint8_t bool_to_b7(uint8_t byte, bool state) { return (state)?byte|0x80:byte&0x7F; }
+inline uint8_t bool_to_b7(bool state) { return bool_to_b7(dummy_byte(), state); }
 
 #endif // _TYPES_H_

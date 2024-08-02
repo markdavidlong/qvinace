@@ -25,8 +25,8 @@
 class CDummyUnit:public CUnit
 {
 public:
-	void write(BYTE addr, BYTE byte) {};
-	BYTE read(BYTE addr) { return dummy_byte() & 0x7F; };
+    void write(uint8_t addr, uint8_t byte) {};
+    uint8_t read(uint8_t addr) { return dummy_byte() & 0x7F; };
 };
 
 class CIoUnit: public CMemory 
@@ -34,15 +34,15 @@ class CIoUnit: public CMemory
 public:
 	CIoUnit();
 	virtual void reset() = 0;
-	virtual void write(WORD addr, BYTE byte);
-	virtual BYTE read(WORD addr);
+    virtual void write(uint16_t addr, uint8_t byte);
+    virtual uint8_t read(uint16_t addr);
  
-	void assign_read(BYTE addr, CUnit *unit);
-	void assign_write(BYTE addr, CUnit *unit);
-	void assign_read_write(BYTE addr, CUnit *unit);
-	void assign_read(BYTE startaddr, BYTE endaddr, CUnit *unit);
-	void assign_write(BYTE startaddr, BYTE endaddr, CUnit *unit);
-	void assign_read_write(BYTE startaddr, BYTE endaddr, CUnit *unit);
+    void assign_read(uint8_t addr, CUnit *unit);
+    void assign_write(uint8_t addr, CUnit *unit);
+    void assign_read_write(uint8_t addr, CUnit *unit);
+    void assign_read(uint8_t startaddr, uint8_t endaddr, CUnit *unit);
+    void assign_write(uint8_t startaddr, uint8_t endaddr, CUnit *unit);
+    void assign_read_write(uint8_t startaddr, uint8_t endaddr, CUnit *unit);
 
 protected:
 	CUnit *dummy;

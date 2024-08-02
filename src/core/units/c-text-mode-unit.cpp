@@ -40,7 +40,7 @@ void CTextModeUnit::reset() {
 	notifyUpdate();
 }
 
-void CTextModeUnit::write(BYTE addr, BYTE byte) {
+void CTextModeUnit::write(uint8_t addr, uint8_t byte) {
 	switch(addr) {
 		case 0x0C: s_80vid = false; break;
 		case 0x0D: s_80vid = true; break;
@@ -51,7 +51,7 @@ void CTextModeUnit::write(BYTE addr, BYTE byte) {
 	notifyUpdate();
 };
 
-BYTE CTextModeUnit::read(BYTE addr) {
+uint8_t CTextModeUnit::read(uint8_t addr) {
 	switch (addr) {
 		case 0x1E: return bool_to_b7(!s_altchar);
 		case 0x1F: return bool_to_b7(s_80vid);

@@ -31,7 +31,7 @@
 // Each line of 8 bytes contains a 8x8 char (actually, only a 7x8 is displayed by the Apple II)
 
 // Standard symbol and numbers
-BYTE charset_symnum[256] =
+uint8_t charset_symnum[256] =
    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x08, 0x08, 0x08, 0x08, 0x08, 0x00, 0x08, 0x00,
     0x14, 0x14, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -66,7 +66,7 @@ BYTE charset_symnum[256] =
     0x1C, 0x22, 0x04, 0x08, 0x08, 0x00, 0x08, 0x00};
 
 // Standard uppercase letters
-BYTE charset_upper[256] =
+uint8_t charset_upper[256] =
    {0x1C, 0x22, 0x2A, 0x2E, 0x2C, 0x20, 0x1E, 0x00,
     0x08, 0x14, 0x22, 0x22, 0x3E, 0x22, 0x22, 0x00,
     0x3C, 0x22, 0x22, 0x3C, 0x22, 0x22, 0x3C, 0x00,
@@ -101,7 +101,7 @@ BYTE charset_upper[256] =
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7F};
 
 // Apple //e and later lowercase letters
-BYTE charset_lower[256] =
+uint8_t charset_lower[256] =
    {0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x1C, 0x02, 0x1E, 0x22, 0x1E, 0x00,
     0x20, 0x20, 0x3C, 0x22, 0x22, 0x22, 0x3C, 0x00,
@@ -136,7 +136,7 @@ BYTE charset_lower[256] =
     0x00, 0x2A, 0x14, 0x2A, 0x14, 0x2A, 0x00, 0x00};
 
 // Apple //c and later alt charset (kind of icons)
-BYTE charset_alt[256] =
+uint8_t charset_alt[256] =
    {0x04, 0x08, 0x36, 0x7F, 0x7E, 0x7E, 0x3F, 0x36,
     0x04, 0x08, 0x36, 0x41, 0x42, 0x42, 0x29, 0x36,
     0x00, 0x00, 0x20, 0x30, 0x38, 0x3C, 0x36, 0x21,
@@ -170,8 +170,8 @@ BYTE charset_alt[256] =
     0x7F, 0x01, 0x01, 0x19, 0x19, 0x01, 0x01, 0x7F,
     0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40};
 
-BYTE* C2ePrimaryCharset::get_char(BYTE code) {
-    BYTE *charset;
+uint8_t* C2ePrimaryCharset::get_char(uint8_t code) {
+    uint8_t *charset;
     switch(code >> 5) {
         case 0: charset = charset_upper; break;
         case 1: charset = charset_symnum; break;
@@ -184,7 +184,7 @@ BYTE* C2ePrimaryCharset::get_char(BYTE code) {
     }
     return charset+((code & 0x1F)<<3);
 }
-char_mode C2ePrimaryCharset::get_mode(BYTE code) {
+char_mode C2ePrimaryCharset::get_mode(uint8_t code) {
     switch(code >> 6) {
         case 0: return mode_inverse; break;
         case 1: return mode_flash; break;
@@ -196,8 +196,8 @@ char_mode C2ePrimaryCharset::get_mode(BYTE code) {
 
 }
 
-BYTE* C2eAlternativeCharset::get_char(BYTE code) {
-    BYTE* charset;
+uint8_t* C2eAlternativeCharset::get_char(uint8_t code) {
+    uint8_t* charset;
     switch(code >> 5) {
         case 0: charset = charset_upper; break;
         case 1: charset = charset_symnum; break;
@@ -211,7 +211,7 @@ BYTE* C2eAlternativeCharset::get_char(BYTE code) {
     return charset+((code & 0x1F)<<3);
 }
 
-char_mode C2eAlternativeCharset::get_mode(BYTE code) {
+char_mode C2eAlternativeCharset::get_mode(uint8_t code) {
     switch(code >> 6) {
         case 0: return mode_inverse; break;
         case 1: return mode_inverse; break;

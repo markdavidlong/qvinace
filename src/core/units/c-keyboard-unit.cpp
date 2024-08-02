@@ -36,18 +36,18 @@ void CKeyboardUnit::reset() {
 	notifyUpdate();
 }
 
-void CKeyboardUnit::access(BYTE addr) {
+void CKeyboardUnit::access(uint8_t addr) {
 	if (addr == 0x10) {
 		keywaiting = false;
 		notifyUpdate();
 	}
 }
 
-void CKeyboardUnit::write(BYTE addr, BYTE byte) {
+void CKeyboardUnit::write(uint8_t addr, uint8_t byte) {
 	access(addr);
 }
 
-BYTE CKeyboardUnit::read(BYTE addr) {
+uint8_t CKeyboardUnit::read(uint8_t addr) {
 	access(addr);
 	if (addr == 0x00)
 		return bool_to_b7(lastkey, keywaiting);
@@ -56,7 +56,7 @@ BYTE CKeyboardUnit::read(BYTE addr) {
 	return dummy_byte(); 
 }
 
-void CKeyboardUnit::press_key(BYTE key) {
+void CKeyboardUnit::press_key(uint8_t key) {
 	lastkey = key;
 	keydown = true;
 	keywaiting = true;

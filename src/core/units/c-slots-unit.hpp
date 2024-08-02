@@ -30,8 +30,8 @@ class CSlotsUnit: public CUnit {
 public:
 	CSlotsUnit();
 	void reset();
-	void write(BYTE addr, BYTE byte);
-	BYTE read(BYTE addr);
+    void write(uint8_t addr, uint8_t byte);
+    uint8_t read(uint8_t addr);
 
 	void insert_card(int slot, CUnit *cardUnit);
 	void remove_card(int slot);

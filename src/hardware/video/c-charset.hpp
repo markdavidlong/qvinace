@@ -31,22 +31,22 @@ class CCharset
 {
 public:
     virtual ~CCharset() { }
-    virtual BYTE* get_char(BYTE code) = 0;
-    virtual char_mode get_mode(BYTE code) = 0;
+    virtual uint8_t* get_char(uint8_t code) = 0;
+    virtual char_mode get_mode(uint8_t code) = 0;
 };
 
 class C2ePrimaryCharset: public CCharset
 {
 public:
-    BYTE* get_char(BYTE code);
-    char_mode get_mode(BYTE code);
+    uint8_t* get_char(uint8_t code);
+    char_mode get_mode(uint8_t code);
 };
 
 class C2eAlternativeCharset: public CCharset
 {
 public:
-    BYTE* get_char(BYTE code);
-    char_mode get_mode(BYTE code);
+    uint8_t* get_char(uint8_t code);
+    char_mode get_mode(uint8_t code);
 };
 
 #endif // _C_CHARSET_HPP_

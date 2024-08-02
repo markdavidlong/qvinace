@@ -19,16 +19,19 @@
 
 #pragma once
 
+#include "../clock.hpp"
 #include "../../core/c-memory.hpp"
 #include "../../core/models/c-apple2e-core.hpp"
-#include "c-computer-hardware.hpp"
 #include "../c-keyboard.hpp"
 #include "../c-speaker.hpp"
 #include "../video/c-video-output.hpp"
 #include "../cards/c-card.hpp"
 #include "../c-paddles.hpp"
 
-class CApple2eHardware: public CComputerHardware
+#include <QObject>
+#include <memory>
+
+class CApple2eHardware: public QObject
 {
     Q_OBJECT
 
@@ -36,20 +39,33 @@ public:
 	CApple2eHardware(CMemory *mainRom, CMemory *internalRom);
 	~CApple2eHardware();
 
-	virtual CApple2eCore *get_core() { return (CApple2eCore *)core; };
+    bool is_running();
 
-	void insertCard(int slot, CCard *card);
+    virtual CApple2eCore *get_core() { return core; };
+
+    void insertCard(int slot, CCard *card);
 	void removeCard(int slot);
+    virtual Clock *get_clock() { return clock; };
 
+    CKeyboard &getKeyboard() { return *keyboard; }
+    CSpeaker &getSpeaker() { return *speaker; }
+    CPaddles &getPaddles() { return *paddles; }
 	// Devices
-	CKeyboard    *keyboard;
-	CPaddles     *paddles;
-	CSpeaker     *speaker;
 	CVideoOutput *colorvideo;
 	CVideoOutput *bwvideo;
 
+public slots:
+    void start();
+    void stop();
+    void reset();
+
 protected:
+    std::unique_ptr<CPaddles> paddles;
+    std::unique_ptr<CSpeaker> speaker;
+    std::unique_ptr<CKeyboard> keyboard;
 	CMemory *mainRom;
-	CMemory *internalRom;
+    CMemory *internalRom;
+    Clock *clock;
+    CApple2eCore *core;
 };
 

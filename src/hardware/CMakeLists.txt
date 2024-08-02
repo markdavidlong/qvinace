@@ -9,7 +9,6 @@ set(HARDWARE_SOURCE_FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/gcr.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/cards/c-card.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/cards/c-disk-controler-card.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/models/c-computer-hardware.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/models/c-apple2e-hardware.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/models/c-apple2e-hardware.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/video/c-charset.cpp

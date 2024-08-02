@@ -27,9 +27,9 @@
 #include "gcr.h"
 
 #define DOS_TRACK_BYTES 4096 
-#define RAW_TRACK_BITS (RAW_TRACK_BYTES*8) 
+#define RAW_TRACK_BITS (RAW_TRACK_BYTES*8)
 
-static BYTE	GCR_encoding_table[64] = {
+static uint8_t	GCR_encoding_table[64] = {
 	0x96, 0x97, 0x9A, 0x9B, 0x9D, 0x9E, 0x9F, 0xA6,
 	0xA7, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB2, 0xB3,
 	0xB4, 0xB5, 0xB6, 0xB7, 0xB9, 0xBA, 0xBB, 0xBC,
@@ -39,13 +39,13 @@ static BYTE	GCR_encoding_table[64] = {
 	0xED, 0xEE, 0xEF, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6,
 	0xF7, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF };
 
-static BYTE	GCR_decoding_table[256];
+static uint8_t	GCR_decoding_table[256];
 static	int	Swap_Bit[4] = { 0, 2, 1, 3 }; /* swap lower 2 bits */
-static BYTE	GCR_buffer[256];
-static BYTE	GCR_buffer2[86];
+static uint8_t	GCR_buffer[256];
+static uint8_t	GCR_buffer2[86];
 
 static int	Position=0;
-static BYTE	*Track_Nibble;
+static uint8_t	*Track_Nibble;
 
 /* physical sector no. to DOS 3.3 logical sector no. table */
 static int	Logical_Sector[16] = {
@@ -57,12 +57,12 @@ static int	Physical_Sector[16];
 /* static function prototypes */
 
 static void init_GCR_table(void);
-static BYTE gcr_read_nibble(void);
-static void gcr_write_nibble( BYTE );
-static void decode62( BYTE* );
-static void encode62( BYTE* );
-static void FM_encode( BYTE );
-static BYTE FM_decode(void);
+static uint8_t gcr_read_nibble(void);
+static void gcr_write_nibble( uint8_t );
+static void decode62( uint8_t* );
+static void encode62( uint8_t* );
+static void FM_encode( uint8_t );
+static uint8_t FM_decode(void);
 static void write_sync( int );
 static int read_address_field( int*, int*, int* );
 static void write_address_field( int, int, int );
@@ -86,9 +86,9 @@ static void init_GCR_table(void)
 	}
 }
 
-static BYTE gcr_read_nibble(void)
+static uint8_t gcr_read_nibble(void)
 { 
-	BYTE	data;
+    uint8_t	data;
 	
 	data = Track_Nibble[Position++];
 	if ( Position >= RAW_TRACK_BYTES )
@@ -96,14 +96,14 @@ static BYTE gcr_read_nibble(void)
 	return data;
 }
 
-static void gcr_write_nibble( BYTE data )
+static void gcr_write_nibble( uint8_t data )
 {
 	Track_Nibble[Position++] = data;
 	if ( Position >= RAW_TRACK_BYTES )
 	   Position = 0;
 }
 
-static void decode62( BYTE *page )
+static void decode62( uint8_t *page )
 {
 	int	i, j;
 
@@ -115,7 +115,7 @@ static void decode62( BYTE *page )
 	}
 }
 
-static void encode62( BYTE *page )
+static void encode62( uint8_t *page )
 {
 	int	i, j;
 
@@ -137,7 +137,7 @@ static void encode62( BYTE *page )
 /*
  * write an FM encoded value, used in writing address fields 
  */
-static void FM_encode( BYTE data )
+static void FM_encode( uint8_t data )
 {
 	gcr_write_nibble( (data >> 1) | 0xAA );
 	gcr_write_nibble( data | 0xAA );
@@ -146,7 +146,7 @@ static void FM_encode( BYTE data )
 /*
  * return an FM encoded value, used in reading address fields 
  */
-static BYTE FM_decode(void)
+static uint8_t FM_decode(void)
 {
 	int		tmp; 
 
@@ -170,7 +170,7 @@ static void write_sync( int length )
 static int read_address_field( int *volume, int *track, int *sector )
 {
 	int	max_try;
-	BYTE	nibble;
+    uint8_t	nibble;
 
 	max_try = 100; 
 	while( --max_try ) {
@@ -224,7 +224,7 @@ static void write_address_field( int volume, int track, int sector )
 static int read_data_field(void)
 {
 	int	i, max_try;
-	BYTE	nibble, checksum;
+    uint8_t	nibble, checksum;
 
 	/*
 	 * read data mark
@@ -266,7 +266,7 @@ static int read_data_field(void)
 static void write_data_field(void)
 {
 	int	i;
-	BYTE	last, checksum;
+    uint8_t	last, checksum;
 
 	/* write prologue */
 	gcr_write_nibble( 0xD5 );
@@ -292,7 +292,7 @@ static void write_data_field(void)
 	gcr_write_nibble( 0xEB );
 }
 
-void SectorsToNibbles( BYTE *sectors, BYTE *nibbles, int volume, int track )
+void SectorsToNibbles( uint8_t *sectors, uint8_t *nibbles, int volume, int track )
 {
 	int	i;
 
@@ -311,7 +311,7 @@ void SectorsToNibbles( BYTE *sectors, BYTE *nibbles, int volume, int track )
 	}
 }
 
-int NibblesToSectors( BYTE *nibbles, BYTE *sectors, int volume, int track )
+int NibblesToSectors( uint8_t *nibbles, uint8_t *sectors, int volume, int track )
 {
 	int	i, scanned[16], max_try, sectors_read;
 	int	vv, tt, ss;	/* volume, track no. and sector no. */

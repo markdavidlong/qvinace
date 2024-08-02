@@ -21,31 +21,28 @@
 #include "core/models/c-apple2e-core.hpp"
 #include "hardware/video/c-main-video-output.hpp"
 #include "hardware/c-cycle-and-wait-clock.hpp"
-#include <iostream>
 
 CApple2eHardware::CApple2eHardware(CMemory *lcRom, CMemory*intRom) {
 	// Apple core
 	core = new CApple2eCore(lcRom, intRom);
-	clock = new CCycleAndWaitClock(core->processor);
+    clock = new CCycleAndWaitClock(core->get_processor());
 	((CCycleAndWaitClock*)clock)->set_frequency(1000000.0); // Set frequency to 1MHz.
 
 	// Peripherals
-	keyboard   = new CKeyboard(get_core(), get_core()->iou->keyboard, get_core()->iou->game);
-	speaker    = new CSpeaker(clock, get_core()->iou->speaker);
-	colorvideo = new CMainVideoOutput(get_core()->memory, get_core()->memory, get_core()->iou->textMode, get_core()->iou->graphicMode, true);
-	bwvideo    = new CMainVideoOutput(get_core()->memory, get_core()->memory, get_core()->iou->textMode, get_core()->iou->graphicMode, true);
-	paddles    = new CPaddles(clock, get_core()->iou->game);
+    keyboard   = std::make_unique<CKeyboard>(this);
+    paddles    = std::make_unique<CPaddles>(clock, core->iou->game);
+    speaker    = std::make_unique<CSpeaker>(clock, core->iou->speaker);
+
+    colorvideo = new CMainVideoOutput(core->get_memory(), core->get_memory(), core->iou->textMode, core->iou->graphicMode, true);
+    bwvideo    = new CMainVideoOutput(core->get_memory(), core->get_memory(), core->iou->textMode, core->iou->graphicMode, true);
 
 	// First reset
 	reset();
 }
 
 CApple2eHardware::~CApple2eHardware() {
-	delete paddles;
 	delete bwvideo;
-	delete colorvideo;
-	delete speaker;
-	delete keyboard;
+    delete colorvideo;
 	delete clock;
 	delete core;
 }
@@ -57,3 +54,21 @@ void CApple2eHardware::insertCard(int slot, CCard *card) {
 void CApple2eHardware::removeCard(int slot) {
 	get_core()->removeCard(slot);
 }
+
+void CApple2eHardware::start() {
+    qDebug() << "CComputerHardware::start()";
+    clock->start();
+}
+
+void CApple2eHardware::stop() {
+    clock->stop();
+}
+
+void CApple2eHardware::reset() {
+    core->reset();
+}
+
+bool CApple2eHardware::is_running() {
+    return clock->is_running();
+};
+

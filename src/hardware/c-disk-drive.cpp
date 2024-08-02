@@ -178,8 +178,8 @@ void CDiskDrive::next_nibble() {
 	}
 }
 
-BYTE CDiskDrive::read_nibble() {
-	BYTE data;
+uint8_t CDiskDrive::read_nibble() {
+    uint8_t data;
 	if (!disk) return 0;
 	if (!motor) return 0;
 
@@ -187,7 +187,7 @@ BYTE CDiskDrive::read_nibble() {
 	return data;
 }
 
-void CDiskDrive::write_nibble(BYTE data) {
+void CDiskDrive::write_nibble(uint8_t data) {
 
 	if (!disk) return;
 	if (!motor) return;

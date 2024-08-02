@@ -23,12 +23,12 @@
 // CMemoryProxy : A subpart of a memory with addresses translation
 //
 
-CMemoryProxy::CMemoryProxy(CMemoryProxy *proxy, WORD start) {
+CMemoryProxy::CMemoryProxy(CMemoryProxy *proxy, uint16_t start) {
     this->start = proxy->get_start()+start;
     this->memory = proxy->get_memory();
 }
 
-CMemoryProxy::CMemoryProxy(CMemory *memory, WORD start) {
+CMemoryProxy::CMemoryProxy(CMemory *memory, uint16_t start) {
     this->start = start;
     this->memory = memory;
 }
@@ -47,7 +47,7 @@ CMemory *CMemoryProxy::get_memory() {
 
 CRamMemory::CRamMemory(int size) {
     this->size = size;
-    this->buffer = new BYTE[size];
+    this->buffer = new uint8_t[size];
     for (int addr = 0; addr<size; addr++)
     {
         //   buffer[addr] = (addr & 0x02)?0x00:0xFF;

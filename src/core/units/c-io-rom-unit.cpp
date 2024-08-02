@@ -41,7 +41,7 @@ void CIoRomUnit::reset() {
 	notifyUpdate();
 }
 
-void CIoRomUnit::access(BYTE addr) {
+void CIoRomUnit::access(uint8_t addr) {
 	switch(addr) {
 		CASE_SWITCH(cxrom, 0x06, 0X07);
 //		CASE_SWITCH(c3rom, 0x0B, 0X0A);
@@ -51,11 +51,11 @@ void CIoRomUnit::access(BYTE addr) {
 	notifyUpdate();
 }
 
-void CIoRomUnit::write(BYTE addr, BYTE byte) {
+void CIoRomUnit::write(uint8_t addr, uint8_t byte) {
 	access(addr);
 }
 
-BYTE CIoRomUnit::read(BYTE addr) {
+uint8_t CIoRomUnit::read(uint8_t addr) {
 	access(addr);
 	switch (addr) {
 		CASE_READ(cxrom, 0x15);

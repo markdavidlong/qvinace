@@ -70,7 +70,7 @@ void CDiskUnit::reset() {
 	interfaces[1]->set_motor(false);
 }
 
-void CDiskUnit::access(BYTE addr) {
+void CDiskUnit::access(uint8_t addr) {
 
 	// Switches common to read and write
 	
@@ -99,8 +99,8 @@ void CDiskUnit::access(BYTE addr) {
 	notifyUpdate();
 }
 
-BYTE CDiskUnit::read(BYTE addr) {
-	BYTE byte = dummy_byte()&0x7F;
+uint8_t CDiskUnit::read(uint8_t addr) {
+    uint8_t byte = dummy_byte()&0x7F;
 	
 	if (addr==0x0E && mode == mode_check) 
 		byte = bool_to_b7(selected->get_protection());
@@ -122,7 +122,7 @@ BYTE CDiskUnit::read(BYTE addr) {
 	return byte;
 }
 
-void CDiskUnit::write(BYTE addr, BYTE byte){
+void CDiskUnit::write(uint8_t addr, uint8_t byte){
 	if (addr==0x0D || addr==0x0F)
 		selected->set_data(byte);
 	access(addr);

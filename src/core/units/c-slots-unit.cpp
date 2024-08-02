@@ -32,7 +32,7 @@ void CSlotsUnit::reset() {
 }
 
 // Dispatch write requests to cards
-void CSlotsUnit::write(BYTE addr, BYTE byte) {
+void CSlotsUnit::write(uint8_t addr, uint8_t byte) {
 	if (addr > 0x8F) {
         if (m_slots[(addr>>4)-0x9]) {
             m_slots[(addr>>4)-0x9]->write(addr&0x0f, byte);
@@ -41,7 +41,7 @@ void CSlotsUnit::write(BYTE addr, BYTE byte) {
 }
 
 // Dispatch read requests to cards
-BYTE CSlotsUnit::read(BYTE addr) {
+uint8_t CSlotsUnit::read(uint8_t addr) {
 	if (addr > 0x8F) {
         if (m_slots[(addr>>4)-0x9]) {
             return m_slots[(addr>>4)-0x9]->read(addr&0x0f);

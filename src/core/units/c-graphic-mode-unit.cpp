@@ -48,7 +48,7 @@ void CGraphicModeUnit::reset() {
 	notifyUpdate();
 }
 
-void CGraphicModeUnit::access(BYTE addr) {
+void CGraphicModeUnit::access(uint8_t addr) {
 	switch(addr) {
 		CASE_SWITCH(text,  0x50, 0x51);
 		CASE_SWITCH(mixed, 0x52, 0x53);
@@ -59,11 +59,11 @@ void CGraphicModeUnit::access(BYTE addr) {
 	notifyUpdate();
 }
 
-void CGraphicModeUnit::write(BYTE addr, BYTE byte) {
+void CGraphicModeUnit::write(uint8_t addr, uint8_t byte) {
 	access(addr);
 }
 
-BYTE CGraphicModeUnit::read(BYTE addr) {
+uint8_t CGraphicModeUnit::read(uint8_t addr) {
 	access(addr);
 	switch (addr) {
 		CASE_READ(text,  0x1A);

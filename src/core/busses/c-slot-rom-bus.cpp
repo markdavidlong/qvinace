@@ -49,7 +49,7 @@ void CSlotRomBus::remove_card(int slot) {
 // Overview : when the card ROM is accessed, then its expansion ROM is visible
 // in $C800-$CFFF.
 
-BYTE CSlotRomBus::read(WORD addr) {
+uint8_t CSlotRomBus::read(uint16_t addr) {
 	// 256 bytes ROMs
 	if (addr < 0x800) {
 		selectedRom = (addr>>8);

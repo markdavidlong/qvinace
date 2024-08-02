@@ -46,8 +46,8 @@ public:
 
 	bool get_protected() { return false; };
 
-	BYTE get_nibble(int track, int position);
-	void set_nibble(int track, int position, BYTE nibble);
+    uint8_t get_nibble(int track, int position);
+    void set_nibble(int track, int position, uint8_t nibble);
 
 	int get_track_maximum() { return DISK_TRACKS; };
 	int get_position_maximum() { return DISK_TRACK_NIBBLES; };
@@ -60,7 +60,7 @@ public:
 protected:
 	std::string name;
 	// The huge entire disk in memory!
-	BYTE nibbles[DISK_TRACKS][DISK_TRACK_NIBBLES];
+    uint8_t nibbles[DISK_TRACKS][DISK_TRACK_NIBBLES];
 };
 
 #endif // _C_FLOPPY_DISK_HPP_

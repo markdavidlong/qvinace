@@ -34,22 +34,12 @@ void CTextRenderer::set_font(Font* font) {
     this->font = font;
 }
 
-void  CTextRenderer::renderChar(CVideoOutput *vo, BYTE byte, int basex, int basey, bool flashon, bool dblwidth) {
-    //int x;
-  //  qDebug() << "RenderChar " << byte;
-    int y;
-    BYTE *chr;
-    BYTE mask;
-    char_mode mode;
+void  CTextRenderer::renderChar(CVideoOutput *vo, uint8_t byte, int basex, int basey, bool flashon, bool dblwidth) {
+    uint8_t *chr = charset->get_char(byte);
+    char_mode mode = charset->get_mode(byte);
+    uint8_t mask =(mode == mode_inverse || (mode == mode_flash && flashon))?0x7f:0x00;
 
-    chr = charset->get_char(byte);
-    mode = charset->get_mode(byte);
-    if (mode == mode_inverse || (mode == mode_flash && flashon))
-        mask = 0x7f;
-    else
-        mask = 0x00;
-
-    for (y=0; y<8; y++) {
+    for (int y=0; y<8; y++) {
         byte = chr[y]^mask;
         if (dblwidth) {
             vo->set_dpixel(basex+12, basey+y, (byte&0x01)?col_white:col_black);
@@ -71,7 +61,7 @@ void  CTextRenderer::renderChar(CVideoOutput *vo, BYTE byte, int basex, int base
     }
 }
 
-void CTextRenderer::renderCharToBitmap(QPainter &p,BYTE byte, int offset_x, int offset_y, bool flashon, bool dblwidth)
+void CTextRenderer::renderCharToBitmap(QPainter &p,uint8_t byte, int offset_x, int offset_y, bool flashon, bool dblwidth)
 {
     if (byte & 0b10000000)  // Inverse
     {
@@ -93,7 +83,6 @@ void CTextRenderer::renderCharToBitmap(QPainter &p,BYTE byte, int offset_x, int 
         byte = byte + 0;
     }
 
-
     QRect cell = QRect(offset_x,offset_y,dblwidth?14:7,8);
     font->paintGlyph(&p,byte,cell,flashon);
 }
@@ -102,21 +91,13 @@ void CTextRenderer::renderCharToBitmap(QPainter &p,BYTE byte, int offset_x, int 
 
 
 void CTxt40ColRenderer::render(int startline, int endline) {
- //   int x, y;
- //   BYTE* chr;
- int line, column, basex, basey;
-    BYTE byte;
-    //BYTE mask;
-    //char_mode mode;
-    bool flashon;
-
-    flashon = (QDateTime::currentMSecsSinceEpoch() % 1000) < 500;
+    bool flashon = (QDateTime::currentMSecsSinceEpoch() % 1000) < 500;
     if (charset) {
-        basey = startline * 8;
-        for (line=startline; line<=endline; line++) {
-            basex = 0;
-            for (column=0; column<40; column++) {
-                byte = mem->read(GBASCALC(line) + column);
+        int basey = startline * 8;
+        for (int line=startline; line<=endline; line++) {
+            int basex = 0;
+            for (int column=0; column<40; column++) {
+                uint8_t byte = mem->read(GBASCALC(line) + column);
                 renderChar(vo, byte, basex, basey, flashon, true);
                 basex+=14;
             }
@@ -136,20 +117,14 @@ QImage &CTxt40ColRenderer::renderToBitmap(QImage &bitmap, int startline, int end
     p.setBrush(Qt::white);
     p.setPen(Qt::white);
 
-    int line, column, basex, basey;
-    BYTE byte;
-
-    bool flashon;
-
-
-   flashon = (QDateTime::currentMSecsSinceEpoch() % 458) < 229;
+   bool flashon = (QDateTime::currentMSecsSinceEpoch() % 458) < 229;
 
     if (charset) {
-        basey = startline * 8;
-        for (line=startline; line<=endline; line++) {
-            basex = 0;
-            for (column=0; column<40; column++) {
-                byte = mem->read(GBASCALC(line) + column);
+        int basey = startline * 8;
+        for (int line=startline; line<=endline; line++) {
+            int basex = 0;
+            for (int column=0; column<40; column++) {
+                uint8_t byte = mem->read(GBASCALC(line) + column);
 //                qDebug() <<
 //                    "Preparing to render char " <<  byte << " at " << basex << ","
 //                         << basey << "With active painter" << p.isActive();
@@ -174,21 +149,16 @@ CTxt80ColRenderer::CTxt80ColRenderer(CMemory* mainMemory, CMemory* auxMemory, CV
 }
 
 void CTxt80ColRenderer::render(int startline, int endline) {
-    int line, column, basex, basey;
-
-    BYTE byte;
-
     // FIXME: This is hokey.
-    bool flashon;
-    flashon = (QDateTime::currentMSecsSinceEpoch() % 1000) < 500;
+    bool flashon = (QDateTime::currentMSecsSinceEpoch() % 1000) < 500;
 
 
     if (charset) {
-        basey = 0;
-        for (line=startline; line<=endline; line++) {
-            basex = 0;
-            for (column=0; column<40; column++) {
-                byte = aux->read(GBASCALC(line) + column - 1);
+        int basey = 0;
+        for (int line=startline; line<=endline; line++) {
+            int basex = 0;
+            for (int column=0; column<40; column++) {
+                uint8_t byte = aux->read(GBASCALC(line) + column - 1);
                 renderChar(vo, byte, basex, basey, flashon, false);
                 basex+=7;
                 byte = mem->read(GBASCALC(line) + column);
@@ -211,19 +181,13 @@ QImage &CTxt80ColRenderer::renderToBitmap(QImage &bitmap, int startline, int end
     p.setBrush(Qt::black);
     p.setPen(Qt::black);
 
-    int line, column, basex, basey;
-    BYTE byte;
-
-    bool flashon;
-
-
-    flashon = (QDateTime::currentMSecsSinceEpoch() % 458) < 224;
+    bool flashon = (QDateTime::currentMSecsSinceEpoch() % 458) < 224;
     if (charset) {
-        basey = startline * 8;
-        for (line=startline; line<=endline; line++) {
-            basex = 0;
-            for (column=0; column<40; column++) {
-                byte = aux->read(GBASCALC(line) + column - 1); // A verifier en 128K
+        int basey = startline * 8;
+        for (int line=startline; line<=endline; line++) {
+            int basex = 0;
+            for (int column=0; column<40; column++) {
+                uint8_t byte = aux->read(GBASCALC(line) + column - 1); // A verifier en 128K
                 renderCharToBitmap(p,byte,basex,basey,flashon,false);
                 basex+=7;
 

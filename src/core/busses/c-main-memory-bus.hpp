@@ -31,8 +31,8 @@ class CMainMemoryBus: public CMemory
 public:
   	CMainMemoryBus(CMemory *ram, CMemory *iou, CMemory *ioBus, CMemory *lcBus);
 
-    BYTE read(WORD addr);
-    void write(WORD addr, BYTE byte);
+    uint8_t read(uint16_t addr);
+    void write(uint16_t addr, uint8_t byte);
 
 protected:
 	CMemory *ram;

@@ -27,7 +27,7 @@ class CSlotRomBus: public CMemory
 public:
 	CSlotRomBus();
 
-	BYTE read(WORD addr);
+    uint8_t read(uint16_t addr);
 
 	void insert_card(int slot, CMemory *cardRom, CMemory *cardRomExt);
 	void remove_card(int slot);

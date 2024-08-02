@@ -32,9 +32,9 @@ public:
     virtual ~CTextRenderer() { }
     void set_charset(CCharset* charset);
     void set_font(Font *font);
-    void renderChar(CVideoOutput *vo, BYTE byte, int basex, int basey, bool flashon, bool dblwidth);
+    void renderChar(CVideoOutput *vo, uint8_t byte, int basex, int basey, bool flashon, bool dblwidth);
     virtual QImage& renderToBitmap(QImage &bitmap, int startline, int endline) = 0;
-    virtual void renderCharToBitmap(QPainter &p, BYTE byte, int offset_x, int offset_y, bool flashon, bool dblwidth);
+    virtual void renderCharToBitmap(QPainter &p, uint8_t byte, int offset_x, int offset_y, bool flashon, bool dblwidth);
 
 protected:
     CCharset *charset;

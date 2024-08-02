@@ -31,8 +31,8 @@
 class CTextModeUnit: public CUnit {
 public:
 	void reset();
-	void write(BYTE addr, BYTE byte);
-	BYTE read(BYTE addr);
+    void write(uint8_t addr, uint8_t byte);
+    uint8_t read(uint8_t addr);
 
 	FLAG_RO(80vid);   // true=80 column display, false=40 column display
 	FLAG_RO(altchar); // true=alternative charset, false=primary chatset  

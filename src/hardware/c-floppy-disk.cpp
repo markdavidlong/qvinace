@@ -39,14 +39,14 @@ void CFloppyDisk::set_name(std::string name) {
 	this->name = name;
 }
 
-BYTE CFloppyDisk::get_nibble(int track, int position) {
+uint8_t CFloppyDisk::get_nibble(int track, int position) {
 	if (in_disk(track, position))
 		return nibbles[track][position];
 	else
 		return 0xFF;
 }
 
-void CFloppyDisk::set_nibble(int track, int position, BYTE nibble) {
+void CFloppyDisk::set_nibble(int track, int position, uint8_t nibble) {
 	if (in_disk(track, position))
 		nibbles[track][position] = nibble;
 }
@@ -66,7 +66,7 @@ void CFloppyDisk::set_name_from_file(std::string filename) {
 // Reads from a logical disk image
 void CFloppyDisk::load_from_dsk_file(std::string filename) {
 
-	BYTE logical_disk[DISK_IMAGE_SIZE];
+    uint8_t logical_disk[DISK_IMAGE_SIZE];
 	
     std::ifstream file (filename.c_str(), std::ios::in|std::ios::binary);
 	if (file.is_open())

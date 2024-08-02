@@ -17,18 +17,17 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _C_GRAPHIC_MODE_RENDERER_HPP_
-#define _C_GRAPHIC_MODE_RENDERER_HPP_
+#pragma once
 
 #include "c-video-renderer.hpp"
-#include "c-gr-renderer.hpp"
+//#include "c-gr-renderer.hpp"
 #include "core/units/c-graphic-mode-unit.hpp"
 
 class CGraphicModeRenderer: public CVideoRenderer
 {
 public:
     CGraphicModeRenderer(CMemory* memory, CGraphicModeUnit* graphicModeUnit, CVideoOutput *vo, bool color);
-    ~CGraphicModeRenderer();
+    virtual ~CGraphicModeRenderer();
     void render(int startline, int endline);
     virtual QImage &renderToBitmap(QImage &bitmap, int startline, int endline);
 
@@ -46,5 +45,4 @@ protected:
 };
 
 
-#endif // _C_GRAPHIC_MODE_RENDERER_HPP_
 

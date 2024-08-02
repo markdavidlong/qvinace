@@ -28,11 +28,11 @@ void CSpeakerUnit::reset() {
 	notifyUpdate();
 };
 
-void CSpeakerUnit::write(BYTE addr, BYTE byte) {
+void CSpeakerUnit::write(uint8_t addr, uint8_t byte) {
 }
 
-BYTE CSpeakerUnit::read(BYTE addr) {
+uint8_t CSpeakerUnit::read(uint8_t addr) {
 	s_speaker = !s_speaker;
 	notifyUpdate();
-	return dummy_byte();
+    return uint8_t();
 }

@@ -32,8 +32,8 @@ class CMemory
 {
 public:
     virtual ~CMemory() { }
-    virtual BYTE read(WORD) = 0;
-    virtual void write(WORD, BYTE) {};
+    virtual uint8_t read(uint16_t) = 0;
+    virtual void write(uint16_t, uint8_t) {};
 };
 
 //
@@ -43,8 +43,8 @@ public:
 class CDummyMemory : public CMemory
 {
 public:
-    BYTE read(WORD) { return dummy_byte(); };
-    void write(WORD, BYTE) {};
+    uint8_t read(uint16_t) { return dummy_byte(); };
+    void write(uint16_t, uint8_t) {};
 };
 
 //
@@ -54,11 +54,11 @@ public:
 class CMemoryProxy: public CMemory
 {
 public:
-    CMemoryProxy(CMemoryProxy *proxy, WORD start);
-    CMemoryProxy(CMemory *memory, WORD start);
+    CMemoryProxy(CMemoryProxy *proxy, uint16_t start);
+    CMemoryProxy(CMemory *memory, uint16_t start);
 
-    BYTE read(WORD addr) { return memory->read(addr + start); }
-    void write(WORD addr, BYTE byte) { memory->write(addr + start, byte); }
+    uint8_t read(uint16_t addr) { return memory->read(addr + start); }
+    void write(uint16_t addr, uint8_t byte) { memory->write(addr + start, byte); }
 
     // These methods are used when pipelining several proxies
     int get_start();
@@ -77,14 +77,14 @@ class CRamMemory: public CMemory
 {
 public:
     CRamMemory(int size);
-    BYTE read(WORD addr) { return (addr < size)?buffer[addr]:dummy_byte(); };
-    void write(WORD addr, BYTE byte) { if (addr < size) buffer[addr] = byte; };
-    BYTE *get_buffer() { return buffer; }
+    uint8_t read(uint16_t addr) { return (addr < size)?buffer[addr]:dummy_byte(); };
+    void write(uint16_t addr, uint8_t byte) { if (addr < size) buffer[addr] = byte; };
+    uint8_t *get_buffer() { return buffer; }
     int get_size() { return size; }
 
 protected:
     int size;
-    BYTE *buffer;
+    uint8_t *buffer;
 };
 
 //
@@ -95,7 +95,7 @@ class CRomMemory: public CRamMemory
 {
 public:
     CRomMemory(int size):CRamMemory(size) { };
-    void write(WORD addr, BYTE byte) { Q_UNUSED(addr); Q_UNUSED(byte);  };
+    void write(uint16_t addr, uint8_t byte) { Q_UNUSED(addr); Q_UNUSED(byte);  };
 
     void loadFromFile(const char* filename, int file_offset) {
         QFile file(filename);

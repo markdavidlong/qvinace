@@ -17,20 +17,22 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _C_KEYBOARD_HPP_
-#define _C_KEYBOARD_HPP_
+#pragma once
 
-#include "core/units/c-game-unit.hpp"
-#include "core/units/c-keyboard-unit.hpp"
-#include "core/models/c-computer-core.hpp"
+class CApple2eHardware;
+class CApple2eCore;
+class CGameUnit;
+class CKeyboardUnit;
+
+#include <cstdint>
 
 class CKeyboard
 {
 public:
-	CKeyboard(CComputerCore *core, CKeyboardUnit *keyboard, CGameUnit *game);
+    CKeyboard(CApple2eHardware *hw);
 
-	// Standard keys
-	void press_key(BYTE asciiKey);
+    // Standard keys
+    void press_key(uint8_t asciiKey);
 	void release_key();
 
 	// Special keys
@@ -42,9 +44,8 @@ public:
 	void release_closed_apple();
 
 protected:
+    CApple2eCore *core;
 	CKeyboardUnit *keyboard;
 	CGameUnit     *game;
-	CComputerCore *core;
 };
 
-#endif // _C_KEYBOARD_HPP_

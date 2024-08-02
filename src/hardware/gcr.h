@@ -33,5 +33,5 @@
 #define RAW_TRACK_BYTES 6392 
 #include "../core/types.h"
 
-void SectorsToNibbles( BYTE *sectors, BYTE *nibbles, int volume, int track );
-int NibblesToSectors( BYTE *nibbles, BYTE *sectors, int volume, int track );
+void SectorsToNibbles( uint8_t *sectors, uint8_t *nibbles, int volume, int track );
+int NibblesToSectors( uint8_t *nibbles, uint8_t *sectors, int volume, int track );

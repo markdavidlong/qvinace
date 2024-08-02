@@ -28,8 +28,8 @@ class CLanguageCardBus: public CMemory, CObserver {
 public:
 	CLanguageCardBus(CLanguageCardUnit *unit, CMemory *rom12k, CMemory *ram16k);
 	~CLanguageCardBus();
-    BYTE read(WORD addr);
-    void write(WORD addr, BYTE byte);
+    uint8_t read(uint16_t addr);
+    void write(uint16_t addr, uint8_t byte);
 	void notify(CObservable * obs);
 
 protected:

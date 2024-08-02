@@ -33,11 +33,11 @@ CIoUnit::CIoUnit() {
 // Memory read and write methods
 //
 
-void CIoUnit::write(WORD addr, BYTE byte) {
+void CIoUnit::write(uint16_t addr, uint8_t byte) {
 	write_map[addr&0xff]->write(addr&0xff, byte);
 }
 
-BYTE CIoUnit::read(WORD addr) {
+uint8_t CIoUnit::read(uint16_t addr) {
 	return read_map[addr&0xff]->read(addr&0xff);
 }
 
@@ -45,30 +45,30 @@ BYTE CIoUnit::read(WORD addr) {
 // Unit assignation
 //
 
-void CIoUnit::assign_read(BYTE addr, CUnit *unit) {
+void CIoUnit::assign_read(uint8_t addr, CUnit *unit) {
 	read_map[addr&0xff] = unit;
 }
 
-void CIoUnit::assign_write(BYTE addr, CUnit *unit) {
+void CIoUnit::assign_write(uint8_t addr, CUnit *unit) {
 	write_map[addr] = unit;
 }
 
-void CIoUnit::assign_read_write(BYTE addr, CUnit *unit) {
+void CIoUnit::assign_read_write(uint8_t addr, CUnit *unit) {
 	assign_read(addr, unit);
 	assign_write(addr, unit);
 }
 
-void CIoUnit::assign_read(BYTE startaddr, BYTE endaddr, CUnit *unit) {
+void CIoUnit::assign_read(uint8_t startaddr, uint8_t endaddr, CUnit *unit) {
 	for (int addr = startaddr; addr <= endaddr; addr++)
 		assign_read(addr, unit);
 }
 
-void CIoUnit::assign_write(BYTE startaddr, BYTE endaddr, CUnit *unit) {
+void CIoUnit::assign_write(uint8_t startaddr, uint8_t endaddr, CUnit *unit) {
 	for (int addr = startaddr; addr <= endaddr; addr++)
 		assign_write(addr, unit);
 }
 
-void CIoUnit::assign_read_write(BYTE startaddr, BYTE endaddr, CUnit *unit) {
+void CIoUnit::assign_read_write(uint8_t startaddr, uint8_t endaddr, CUnit *unit) {
 	for (int addr = startaddr; addr <= endaddr; addr++) {
 		assign_read(addr, unit);
 		assign_write(addr, unit);

@@ -17,9 +17,8 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _C_APPLE2E_CORE_HPP_
-#define _C_APPLE2E_CORE_HPP_
-#include "c-computer-core.hpp"
+#pragma once
+
 #include "../c-io-unit.hpp"
 
 #include "../units/c-game-unit.hpp"
@@ -31,6 +30,8 @@
 #include "../units/c-speaker-unit.hpp"
 #include "../units/c-text-mode-unit.hpp"
 #include "../busses/c-slot-rom-bus.hpp"
+#include "../c-memory.hpp"
+#include "../c-processor.hpp"
 
 class CApple2eIoUnit: public CIoUnit {
 public:
@@ -50,21 +51,25 @@ public:
 
 };
 
-class CApple2eCore: public CComputerCore 
+class CApple2eCore
 {
 public:
 	CApple2eCore(CMemory *lcRom, CMemory *intRom);
     virtual ~CApple2eCore();
 	
 	void reset();
-	
+    virtual void cycle();
+
 	// In core, a card is a unit plus some rom
 	void insertCard(int slot, CUnit *cardUnit, CMemory *cardRom, CMemory *cardRomExt);
 	void removeCard(int slot);
 
 	CMemory *rom; // The whole ROM
 	CApple2eIoUnit *iou;
-	
+
+    CProcessor *get_processor() { return processor; };
+    CMemory    *get_memory() { return memory; };
+
 protected:
 	// Memory proxies and busses
 	CMemory *intRom;  // Internal ROM ($C100-$CFFF)
@@ -74,6 +79,7 @@ protected:
 	CMemory *ioBus;   // Slots ROM or internal ROM bus
 	CMemory *lcBus;   // Language card bus
 	CSlotRomBus *slotBus; // Slots ROMs bus
+    CProcessor *processor;
+    CMemory    *memory;
 };
 
-#endif // _C_APPLE2E_CORE_HPP_

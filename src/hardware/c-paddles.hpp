@@ -27,16 +27,16 @@ class CPaddles: public CObserver
 {
 public:
 	CPaddles(Clock *clock, CGameUnit *gameUnit);
-	~CPaddles();
+    virtual ~CPaddles();
 	static void timer_callback(void *ptr);
-	void set_paddle(int paddle, BYTE position);
+    void set_paddle(int paddle, uint8_t position);
 //	void set_button(int button, bool position);
 	void notify(CObservable *obs);
 	void countdown();
 protected:
 	CGameUnit *gameUnit;
-	BYTE paddle_position[4];
-	BYTE paddle_counter[4];
+    uint8_t paddle_position[4];
+    uint8_t paddle_counter[4];
 private:
 	int index;
 };
