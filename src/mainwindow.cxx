@@ -33,7 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::stopPc);
     connect(ui->m_reset_button, &QPushButton::clicked,
             this, &MainWindow::resetPc);
-
+    connect(ui->action_Quit, &QAction::triggered,
+           this, &QApplication::quit);
 
     auto gl = new  QGridLayout();
     gl->setContentsMargins(0,0,0,0);
@@ -70,7 +71,7 @@ void MainWindow::buildComputer()
     CDiskDrive *drive1 = new CDiskDrive(m_system->get_clock(), controler->get_interface(0));
     CDiskDrive *drive2 = new CDiskDrive(m_system->get_clock(), controler->get_interface(1));
 //    CFloppyDisk diskette("C:/develop/git/AppleSaws/disk-images/dos.3.3.system.master.dsk");
-    CFloppyDisk diskette("C:/apple/Disks/Apple Disks/test2.dsk");
+    CFloppyDisk diskette("D:/git/fontrix/fontrix_stuff/FONTRIX.DSK");
     drive1->insert(&diskette);
 
     QObject::connect(this, &MainWindow::startPc,

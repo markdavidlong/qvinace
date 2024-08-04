@@ -27,11 +27,17 @@
 #include <QQuickItem>
 #include <QQmlProperty>
 
+
+QImage MyProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize) {
+    return m_mon->requestImage(id,size,requestedSize);
+}
+
 CGuiMonitor::CGuiMonitor(CVideoOutput *vo,  QWidget *parent):
     QQuickWidget(parent)//,QQuickImageProvider(QQmlImageProviderBase::Image)
 {
     this->vo = vo;
-   //TODO: FIX ME! engine()->addImageProvider("crt",this);
+    m_provider = new MyProvider(this);
+    engine()->addImageProvider("crt",m_provider);
     setSource(QUrl::fromLocalFile(":GuiMonitor.qml"));
 
     setResizeMode(ResizeMode::SizeRootObjectToView);
@@ -54,6 +60,7 @@ CGuiMonitor::CGuiMonitor(CVideoOutput *vo,  QWidget *parent):
 
 CGuiMonitor::~CGuiMonitor()
 {
+    delete m_provider;
 }
 
 QSize CGuiMonitor::sizeHint() const

@@ -29,6 +29,19 @@
 #include <QQuickImageProvider>
 #include "hardware/video/c-video-output.hpp"
 
+class CGuiMonitor;
+
+class MyProvider : public QQuickImageProvider {
+    Q_OBJECT
+
+public:
+    explicit MyProvider(CGuiMonitor *mon) : QQuickImageProvider(QQuickImageProvider::Image), m_mon(mon) {}
+
+    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
+    CGuiMonitor *m_mon;
+
+};
+
 class CGuiMonitor:public QQuickWidget //, public QQuickImageProvider
 {
     Q_OBJECT
@@ -60,6 +73,7 @@ protected:
 private:
     int xmargin, ymargin;
     QElapsedTimer tmr;
+    MyProvider *m_provider;
 };
 
 

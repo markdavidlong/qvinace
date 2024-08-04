@@ -16,10 +16,13 @@ set(VINACE_SOURCES
     mainwindow.cxx
     mainwindow.h
     mainwindow.ui
+
+    QResources.qrc
 )
 
 
-add_executable(qvinace ${VINACE_SOURCES} )
+add_executable(qvinace ${VINACE_SOURCES}
+    crt.frag )
 
 target_link_libraries(qvinace Qt6::Widgets Qt6::Core Qt6::Quick Qt6::QuickWidgets)
 
