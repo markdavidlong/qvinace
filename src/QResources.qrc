@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="APPLE2E.ROM">../roms/APPLE2E.ROM</file>
+        <file alias="closed.jpg">../resources/closed.jpg</file>
+        <file alias="colormon.jpg">../resources/colormon.jpg</file>
+        <file alias="drive_1.jpg">../resources/drive_1.jpg</file>
+        <file alias="drive_2.jpg">../resources/drive_2.jpg</file>
+        <file alias="monitor.jpg">../resources/monitor.jpg</file>
+        <file alias="on.jpg">../resources/on.jpg</file>
+        <file alias="Apple2e_Enhanced.rom">../roms/Apple2e_Enhanced.rom</file>
+        <file alias="Apple2e_Unenh.rom">../roms/Apple2e_Unenh.rom</file>
+        <file alias="DISK2.rom">../roms/DISK2.rom</file>
+        <file alias="MouseInterface.rom">../roms/MouseInterface.rom</file>
+        <file alias="Parallel.rom">../roms/Parallel.rom</file>
+        <file alias="SSC.rom">../roms/SSC.rom</file>
+        <file alias="Trinitron1.png">../resources/Trinitron1.png</file>
+        <file alias="Trinitron3.png">../resources/Trinitron3.png</file>
+        <file alias="roms/char.rom">../roms/char.rom</file>
+        <file alias="roms/char2.rom">../roms/char2.rom</file>
+        <file alias="GuiMonitor.qml">GuiMonitor.qml</file>
+        <file alias="Solid.qml">Solid.qml</file>
+        <file alias="crt.qsb">crt.qsb</file>
+    </qresource>
+</RCC>
